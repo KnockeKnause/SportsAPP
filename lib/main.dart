@@ -1,4 +1,4 @@
-// Created by: [Lukas]
+// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
 
@@ -217,7 +217,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
   final _controller = TextEditingController();
   String _query = '';
 
-  final _sports = [
+  final List<Map<String, dynamic>> _sports = [
     {'name': 'Basketball', 'icon': Icons.sports_basketball},
     {'name': 'Football', 'icon': Icons.sports_soccer},
     {'name': 'Ice Hockey', 'icon': Icons.sports_hockey},
@@ -237,13 +237,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
   Widget build(BuildContext context) {
     final t = Theme.of(context);
     final visibleSports =
-        _sports
-            .where(
-              (s) => (s['name'] as String).toLowerCase().contains(
-                _query.toLowerCase(),
-              ),
-            )
-            .toList();
+        _sports.where((s) {
+          final name = (s['name'] as String).toLowerCase();
+          return name.contains(_query.toLowerCase());
+        }).toList();
 
     return SafeArea(
       child: Padding(
@@ -376,12 +373,11 @@ class AlertsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context);
-    return SafeArea(
-      child: Center(
+    return Scaffold(
+      body: Center(
         child: Text(
           'Alerts Page – coming soon',
-          style: t.textTheme.titleMedium,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
     );
