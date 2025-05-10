@@ -19,8 +19,6 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blueAccent,
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF111111),
-          selectedItemColor: Colors.blueAccent,
-          unselectedItemColor: Colors.grey,
         ),
         textTheme: ThemeData.dark().textTheme.copyWith(
           headlineLarge: const TextStyle(
@@ -96,6 +94,23 @@ const Map<String, List<String>> kLeagueLookup = {
     '3. Bundesliga',
     'Premier League',
     'National Teams',
+    'Champions League',
+    'Europa League',
+  ],
+  'Ice Hockey': ['NHL', 'KHL', 'DEL', 'National Teams'],
+  'Darts': ['PDC', 'WDF', 'National Teams'],
+  'Tennis': ['ATP', 'WTA', 'ITF', 'National Teams'],
+  'Baseball': ['MLB', 'Nippon', 'KBO', 'National Teams'],
+  'American Football': ['NFL', 'College', 'National Teams'],
+  'Rugby': ['NRL', 'Super League', 'National Teams'],
+  'Cricket': ['IPL', 'BBL', 'National Teams'],
+  'Golf': ['PGA Tour', 'European Tour', 'National Teams'],
+  'Motorsport': ['Formula 1', 'MotoGP', 'NASCAR', 'National Teams'],
+  'Cycling': [
+    'Tour de France',
+    'Giro d\'Italia',
+    'Vuelta a España',
+    'National Teams',
   ],
 };
 
@@ -115,7 +130,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: const [SchedulePage(), FavouritesPage(), AlertsPage()],
+        children: const [SchedulePage(), Search(), Settings()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -125,13 +140,10 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.calendar_month),
             label: 'Schedule',
           ),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.star_border),
-            label: 'Favourite Teams',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none),
-            label: 'Manage Alerts',
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
@@ -205,15 +217,15 @@ class SchedulePage extends StatelessWidget {
   }
 }
 
-/// PAGE 2 – Favourite Teams with search bar and league navigation
-class FavouritesPage extends StatefulWidget {
-  const FavouritesPage({super.key});
+/// PAGE 2 – Search bar and league navigation
+class Search extends StatefulWidget {
+  const Search({super.key});
 
   @override
-  State<FavouritesPage> createState() => _FavouritesPageState();
+  State<Search> createState() => _SearchState();
 }
 
-class _FavouritesPageState extends State<FavouritesPage> {
+class _SearchState extends State<Search> {
   final _controller = TextEditingController();
   String _query = '';
 
@@ -223,6 +235,13 @@ class _FavouritesPageState extends State<FavouritesPage> {
     {'name': 'Ice Hockey', 'icon': Icons.sports_hockey},
     {'name': 'Darts', 'icon': Icons.sports},
     {'name': 'Tennis', 'icon': Icons.sports_tennis},
+    {'name': 'Baseball', 'icon': Icons.sports_baseball},
+    {'name': 'American Football', 'icon': Icons.sports_football},
+    {'name': 'Rugby', 'icon': Icons.sports_rugby},
+    {'name': 'Cricket', 'icon': Icons.sports_cricket},
+    {'name': 'Golf', 'icon': Icons.sports_golf},
+    {'name': 'Motorsport', 'icon': Icons.sports_motorsports},
+    {'name': 'Cycling', 'icon': Icons.directions_bike},
   ];
 
   final Set<int> _selected = {};
@@ -298,10 +317,6 @@ class _FavouritesPageState extends State<FavouritesPage> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color:
-                            isSelected
-                                ? t.primaryColor.withOpacity(0.15)
-                                : t.cardColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -318,8 +333,6 @@ class _FavouritesPageState extends State<FavouritesPage> {
                               style: t.textTheme.titleMedium,
                             ),
                           ),
-                          if (isSelected)
-                            const Icon(Icons.check, color: Colors.blueAccent),
                         ],
                       ),
                     ),
@@ -367,18 +380,15 @@ class LeaguesPage extends StatelessWidget {
   }
 }
 
-/// PAGE 3 – Alerts placeholder
-class AlertsPage extends StatelessWidget {
-  const AlertsPage({super.key});
+/// PAGE 3 – Settings placeholder
+class Settings extends StatelessWidget {
+  const Settings({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          'Alerts Page – coming soon',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        child: Text('Settings', style: Theme.of(context).textTheme.titleMedium),
       ),
     );
   }
