@@ -1,6 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() => runApp(const MyApp());
 
@@ -88,7 +90,7 @@ const fixtures = [
 /// SPORT ➔ LIST OF LEAGUES mapping
 const Map<String, List<String>> kLeagueLookup = {
   'Basketball': ['NBA', 'BBL 1', 'BBL 2', 'National Teams'],
-  'Football': [
+  'Soccer': [
     '1. Bundesliga',
     '2. Bundesliga',
     '3. Bundesliga',
@@ -231,7 +233,7 @@ class _SearchState extends State<Search> {
 
   final List<Map<String, dynamic>> _sports = [
     {'name': 'Basketball', 'icon': Icons.sports_basketball},
-    {'name': 'Football', 'icon': Icons.sports_soccer},
+    {'name': 'Soccer', 'icon': Icons.sports_soccer},
     {'name': 'Ice Hockey', 'icon': Icons.sports_hockey},
     {'name': 'Darts', 'icon': Icons.sports},
     {'name': 'Tennis', 'icon': Icons.sports_tennis},
@@ -245,6 +247,19 @@ class _SearchState extends State<Search> {
   ];
 
   final Set<int> _selected = {};
+  
+Future<List<String>> fetchLeagues(String sport) async {
+  final response = await http.get(Uri.parse('https://www.thesportsdb.com/api/v1/json/3/search_all_leagues.php?c=Germany&s=$sport'));
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    final leagues = (data['countries'] as List?)?.map<String>((league) {
+      return league['strLeague'] as String;
+    }).toList() ?? [];
+    return leagues;
+  } else {
+    throw Exception('Fehler beim Laden der Ligen');
+  }
+}
 
   @override
   void dispose() {
@@ -295,23 +310,33 @@ class _SearchState extends State<Search> {
                   final isSelected = _selected.contains(originalIndex);
 
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       setState(() {
                         isSelected
                             ? _selected.remove(originalIndex)
                             : _selected.add(originalIndex);
                       });
                       final sportName = s['name'] as String;
-                      if (kLeagueLookup.containsKey(sportName)) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (_) => LeaguesPage(
-                                  sport: sportName,
-                                  leagues: kLeagueLookup[sportName]!,
-                                ),
-                          ),
+                      try {
+                        final leagues = await fetchLeagues(sportName);
+                        if (!mounted) return;
+                        if (leagues.isNotEmpty) {
+                          Navigator.push(
+                            // ignore: use_build_context_synchronously
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => LeaguesPage(
+                                sport: sportName,
+                                leagues: leagues,
+                              ),
+                            ),
+                          );
+                        }
+                      } catch (e) {
+                        if (!mounted) return;
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Fehler beim Laden der Ligen')),
                         );
                       }
                     },
