@@ -5,6 +5,8 @@ void main() {
 }
 
 class MySportsApp extends StatelessWidget {
+  const MySportsApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -97,7 +99,7 @@ class SportCategory {
 
 // Data Service
 class DataService {
-  static List<TeamPlayer> _allTeamsPlayers = [];
+  static final List<TeamPlayer> _allTeamsPlayers = [];
   static List<SportEvent> _allEvents = [];
 
   static void initializeData() {
@@ -419,6 +421,8 @@ class DataService {
 }
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -490,6 +494,8 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 class EinstellungenPage extends StatelessWidget {
+  const EinstellungenPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -564,6 +570,82 @@ class _FavoritenPageState extends State<FavoritenPage> {
               SizedBox(height: 16),
             ],
 
+            // Favorites List Section
+            if (favorites.isNotEmpty) ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Favorisierte Teams/Spieler',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                  Text(
+                    '${favorites.length}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 12),
+
+              // Favorites List
+              Container(
+                height: 200, // Fixed height for favorites list
+                child: ListView.builder(
+                  itemCount: favorites.length,
+                  itemBuilder: (context, index) {
+                    final item = favorites[index];
+                    return Card(
+                      margin: EdgeInsets.symmetric(vertical: 2),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Text(
+                            item.imageUrl,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        title: Text(
+                          item.name,
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        subtitle: Text(
+                          '${item.league} • ${item.country}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.favorite, color: Colors.red),
+                          onPressed: () {
+                            setState(() {
+                              DataService.toggleFavorite(item);
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  '${item.name} aus Favoriten entfernt',
+                                ),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 16),
+            ],
+
             // Events Section
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -600,8 +682,39 @@ class _FavoritenPageState extends State<FavoritenPage> {
             // Events List or Empty State
             Expanded(
               child:
-                  favoriteEvents.isEmpty
+                  favoriteEvents.isEmpty && favorites.isEmpty
                       ? _buildEmptyState()
+                      : favoriteEvents.isEmpty
+                      ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.event_busy,
+                              size: 48,
+                              color: Colors.grey[400],
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              'Keine Events verfügbar',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Events werden angezeigt, sobald\nsie für deine Favoriten verfügbar sind',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[500],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                       : ListView.builder(
                         itemCount: favoriteEvents.length,
                         itemBuilder: (context, index) {
@@ -769,6 +882,8 @@ class _FavoritenPageState extends State<FavoritenPage> {
 }
 
 class SuchePage extends StatefulWidget {
+  const SuchePage({super.key});
+
   @override
   _SuchePageState createState() => _SuchePageState();
 }
@@ -952,14 +1067,17 @@ class _SuchePageState extends State<SuchePage> {
 class SportDetailPage extends StatelessWidget {
   final SportCategory category;
 
-  SportDetailPage({required this.category});
+  const SportDetailPage({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF4DB6AC),
-        title: Text(category.name, style: TextStyle(color: Colors.white)),
+        title: Text(
+          category.name,
+          style: TextStyle(color: const Color.fromRGBO(255, 255, 255, 1)),
+        ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Padding(
@@ -1023,7 +1141,7 @@ class SportDetailPage extends StatelessWidget {
 class LeagueDetailPage extends StatefulWidget {
   final League league;
 
-  LeagueDetailPage({required this.league});
+  const LeagueDetailPage({super.key, required this.league});
 
   @override
   _LeagueDetailPageState createState() => _LeagueDetailPageState();
