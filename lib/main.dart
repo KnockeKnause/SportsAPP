@@ -6,10 +6,12 @@ import 'providers/favorites_provider.dart';
 import 'providers/sports_provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -25,12 +27,12 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.teal,
               brightness: Brightness.light,
-              appBarTheme: AppBarTheme(
+              appBarTheme: const AppBarTheme(
                 backgroundColor: Color(0xFF4ECDC4),
                 foregroundColor: Colors.black,
                 elevation: 0,
               ),
-              bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
                 backgroundColor: Color(0xFF4ECDC4),
                 selectedItemColor: Colors.black,
                 unselectedItemColor: Colors.black54,
@@ -40,12 +42,12 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.teal,
               brightness: Brightness.dark,
               scaffoldBackgroundColor: Colors.black,
-              appBarTheme: AppBarTheme(
+              appBarTheme: const AppBarTheme(
                 backgroundColor: Colors.black,
                 foregroundColor: Colors.white,
                 elevation: 0,
               ),
-              bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
                 backgroundColor: Colors.black,
                 selectedItemColor: Colors.white,
                 unselectedItemColor: Colors.white54,
