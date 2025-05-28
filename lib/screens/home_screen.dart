@@ -32,12 +32,14 @@ class _HomeScreenState extends State<HomeScreen> {
           margin: const EdgeInsets.all(8),
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.orange,
           ),
-          child: const Icon(
-            Icons.sports_soccer,
-            color: Colors.white,
-            size: 20,
+          child: ClipOval(
+            child: Image.asset(
+              "lib/assets/img/logo.jpeg", // Passe den Pfad zum Bild an
+              width: 28,
+              height: 28,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         title: const Text(

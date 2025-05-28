@@ -46,20 +46,20 @@ class _SearchScreenState extends State<SearchScreen> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           child: TextField(
             controller: _searchController,
             onChanged: _filterSports,
             decoration: InputDecoration(
-              hintText: 'Suche Sportarten',
-              prefixIcon: const Icon(Icons.search),
+              hintText: 'Suche...',
+              suffixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(30),
               ),
               filled: true,
               fillColor: Theme.of(context).brightness == Brightness.dark 
-                  ? Colors.grey[800] 
-                  : Colors.grey[100],
+                  ? Colors.grey[900] 
+                  : Colors.grey[200],
             ),
           ),
         ),
@@ -86,7 +86,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 )
               : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   itemCount: _filteredSports.length,
                   itemBuilder: (context, index) {
                     final sport = _filteredSports[index];

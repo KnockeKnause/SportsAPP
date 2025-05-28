@@ -8,17 +8,17 @@ class SettingsScreen extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return ListView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           children: [
             Card(
               child: Column(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.brightness_6),
-                    title: Text('Design'),
+                    leading: const Icon(Icons.brightness_6),
+                    title: const Text('Design'),
                     trailing: DropdownButton<ThemeMode>(
                       value: themeProvider.themeMode,
-                      items: [
+                      items: const [
                         DropdownMenuItem(
                           value: ThemeMode.system,
                           child: Text('System'),
@@ -42,34 +42,34 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Card(
               child: Column(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.info),
-                    title: Text('Über die App'),
-                    subtitle: Text('MY SPORTS v1.0.0'),
+                    leading: const Icon(Icons.info),
+                    title: const Text('Über die App'),
+                    subtitle: const Text('MY SPORTS v1.0.0'),
                     onTap: () {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: Text('MY SPORTS'),
-                          content: Text(
+                          title: const Text('MY SPORTS'),
+                          content: const Text(
                             'Eine App zur Verwaltung deiner Lieblingssportarten, Wettbewerbe und Teams.\n\nVersion: 1.0.0',
                           ),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: Text('OK'),
+                              child: const Text('OK'),
                             ),
                           ],
                         ),
                       );
                     },
                   ),
-                  Divider(height: 1),
-                  ListTile(
+                  const Divider(height: 1),
+                  const ListTile(
                     leading: Icon(Icons.code),
                     title: Text('Entwickelt mit Flutter'),
                     subtitle: Text('Dart & Flutter Framework'),
@@ -77,11 +77,11 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Card(
               child: Column(
                 children: [
-                  ListTile(
+                  const ListTile(
                     leading: Icon(Icons.api),
                     title: Text('API Status'),
                     subtitle: Text('Verbindung zu Sport-APIs'),
@@ -91,14 +91,14 @@ class SettingsScreen extends StatelessWidget {
                       size: 12,
                     ),
                   ),
-                  Divider(height: 1),
+                  const Divider(height: 1),
                   ListTile(
-                    leading: Icon(Icons.refresh),
-                    title: Text('Daten aktualisieren'),
-                    subtitle: Text('Lade die neuesten Informationen'),
+                    leading: const Icon(Icons.refresh),
+                    title: const Text('Daten aktualisieren'),
+                    subtitle: const Text('Lade die neuesten Informationen'),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text('Daten werden aktualisiert...'),
                           duration: Duration(seconds: 2),
                         ),

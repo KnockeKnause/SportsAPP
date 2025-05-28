@@ -8,10 +8,10 @@ class TeamsScreen extends StatelessWidget {
   final Color sportColor;
 
   const TeamsScreen({
-    Key? key, 
+    super.key, 
     required this.competition,
     required this.sportColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +20,10 @@ class TeamsScreen extends StatelessWidget {
         title: Text(competition.name),
         backgroundColor: Theme.of(context).brightness == Brightness.dark 
             ? Colors.black 
-            : Color(0xFF4ECDC4),
+            : const Color(0xFF4ECDC4),
       ),
       body: competition.teams.isEmpty
-          ? Center(
+          ? const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -49,7 +49,7 @@ class TeamsScreen extends StatelessWidget {
               ),
             )
           : ListView.builder(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               itemCount: competition.teams.length,
               itemBuilder: (context, index) {
                 final team = competition.teams[index];
@@ -58,13 +58,13 @@ class TeamsScreen extends StatelessWidget {
                     final isFavorite = favoritesProvider.isTeamFavorite(team.id);
                     
                     return Card(
-                      margin: EdgeInsets.only(bottom: 12),
+                      margin: const EdgeInsets.only(bottom: 12),
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundColor: sportColor,
                           child: Text(
                             team.name.substring(0, 1).toUpperCase(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -72,7 +72,7 @@ class TeamsScreen extends StatelessWidget {
                         ),
                         title: Text(
                           team.name,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
