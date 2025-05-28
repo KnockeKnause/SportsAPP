@@ -508,6 +508,8 @@ class EinstellungenPage extends StatelessWidget {
 }
 
 class FavoritenPage extends StatefulWidget {
+  const FavoritenPage({super.key});
+
   @override
   _FavoritenPageState createState() => _FavoritenPageState();
 }
@@ -596,7 +598,7 @@ class _FavoritenPageState extends State<FavoritenPage> {
               SizedBox(height: 12),
 
               // Favorites List
-              Container(
+              SizedBox(
                 height: 200, // Fixed height for favorites list
                 child: ListView.builder(
                   itemCount: favorites.length,
