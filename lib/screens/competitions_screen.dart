@@ -7,7 +7,7 @@ import 'teams_screen.dart';
 class CompetitionsScreen extends StatelessWidget {
   final Sport sport;
 
-  const CompetitionsScreen({Key? key, required this.sport}) : super(key: key);
+  const CompetitionsScreen({super.key, required this.sport});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +16,10 @@ class CompetitionsScreen extends StatelessWidget {
         title: Text(sport.name),
         backgroundColor: Theme.of(context).brightness == Brightness.dark 
             ? Colors.black 
-            : Color(0xFF4ECDC4),
+            : const Color(0xFF4ECDC4),
       ),
       body: ListView.builder(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         itemCount: sport.competitions.length,
         itemBuilder: (context, index) {
           final competition = sport.competitions[index];
@@ -28,7 +28,7 @@ class CompetitionsScreen extends StatelessWidget {
               final isFavorite = favoritesProvider.isCompetitionFavorite(competition.id);
               
               return Card(
-                margin: EdgeInsets.only(bottom: 12),
+                margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: sport.color,
@@ -36,7 +36,7 @@ class CompetitionsScreen extends StatelessWidget {
                   ),
                   title: Text(
                     competition.name,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +69,7 @@ class CompetitionsScreen extends StatelessWidget {
                           }
                         },
                       ),
-                      Icon(Icons.arrow_forward_ios, size: 16),
+                      const Icon(Icons.arrow_forward_ios, size: 16),
                     ],
                   ),
                   onTap: () {

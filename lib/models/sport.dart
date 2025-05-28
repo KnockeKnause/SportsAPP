@@ -32,7 +32,7 @@ class Sport {
       'id': id,
       'name': name,
       'icon': icon.codePoint,
-      'color': color.value,
+      'color': color,
       'competitions': competitions.map((c) => c.toJson()).toList(),
     };
   }

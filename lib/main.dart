@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
-            title: 'MY SPORTS',
+            title: 'SCORE',
             theme: ThemeData(
               primarySwatch: Colors.teal,
               brightness: Brightness.light,
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             themeMode: themeProvider.themeMode,
-            home: HomeScreen(),
+            home: const HomeScreen(),
           );
         },
       ),

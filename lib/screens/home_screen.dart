@@ -6,6 +6,8 @@ import 'search_screen.dart';
 import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -14,8 +16,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   
   final List<Widget> _screens = [
-    FavoritesScreen(),
-    SearchScreen(),
+    const FavoritesScreen(),
+    const SearchScreen(),
     SettingsScreen(),
   ];
 
@@ -27,52 +29,25 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Container(
-          margin: EdgeInsets.all(8),
-          decoration: BoxDecoration(
+          margin: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.orange,
           ),
-          child: Icon(
+          child: const Icon(
             Icons.sports_soccer,
             color: Colors.white,
             size: 20,
           ),
         ),
-        title: Text(
-          'MY SPORTS',
+        title: const Text(
+          'SCORE',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
-        backgroundColor: isDark ? Colors.black : Color(0xFF4ECDC4),
-        actions: [
-          Container(
-            margin: EdgeInsets.only(right: 16),
-            child: Row(
-              children: [
-                Container(
-                  width: 20,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                SizedBox(width: 2),
-                Container(
-                  width: 2,
-                  height: 10,
-                  color: Colors.black,
-                ),
-                SizedBox(width: 2),
-                Icon(Icons.wifi, size: 18),
-                SizedBox(width: 4),
-                Icon(Icons.battery_full, size: 18),
-              ],
-            ),
-          ),
-        ],
+        backgroundColor: isDark ? Colors.black : const Color(0xFF4ECDC4),
       ),
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -82,10 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
             _currentIndex = index;
           });
         },
-        backgroundColor: isDark ? Colors.black : Color(0xFF4ECDC4),
+        backgroundColor: isDark ? Colors.black : const Color(0xFF4ECDC4),
         selectedItemColor: isDark ? Colors.white : Colors.black,
         unselectedItemColor: isDark ? Colors.white54 : Colors.black54,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favoriten',

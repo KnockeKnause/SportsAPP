@@ -6,12 +6,14 @@ import '../widgets/sport_card.dart';
 import 'competitions_screen.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final _searchController = TextEditingController();
   List<Sport> _filteredSports = [];
 
   @override
@@ -44,13 +46,13 @@ class _SearchScreenState extends State<SearchScreen> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: TextField(
             controller: _searchController,
             onChanged: _filterSports,
             decoration: InputDecoration(
               hintText: 'Suche Sportarten',
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -63,7 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         Expanded(
           child: _filteredSports.isEmpty
-              ? Center(
+              ? const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -84,7 +86,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 )
               : ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   itemCount: _filteredSports.length,
                   itemBuilder: (context, index) {
                     final sport = _filteredSports[index];
