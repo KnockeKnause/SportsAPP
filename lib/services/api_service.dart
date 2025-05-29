@@ -3,13 +3,15 @@ import 'package:http/http.dart' as http;
 import '../models/sport.dart';
 
 class ApiService {
-  static const String baseUrl = 'https://api.example.com'; // Ersetzen Sie mit Ihrer API-URL
+  static const String baseUrl = 'https://v3.football.api-sports.io/'; // Ersetzen Sie mit Ihrer API-URL
   static const Duration timeout = Duration(seconds: 10);
 
   // Headers für alle API-Anfragen
   static Map<String, String> get headers => {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
+    'x-rapidapi-key': '39c957bce6f19bce08a4858574b55815',
+    'x-rapidapi-host': 'v3.football.api-sports.io'
     // Fügen Sie hier API-Keys oder Authentifizierungs-Header hinzu
     // 'Authorization': 'Bearer YOUR_API_KEY',
   };
@@ -41,7 +43,7 @@ class ApiService {
     try {
       final response = await http
           .get(
-            Uri.parse('$baseUrl/sports/$sportId/competitions'),
+            Uri.parse('https://v3.football.api-sports.io/teams?id=1'),
             headers: headers,
           )
           .timeout(timeout);

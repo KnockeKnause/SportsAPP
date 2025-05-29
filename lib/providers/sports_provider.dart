@@ -13,158 +13,22 @@ class SportsProvider extends ChangeNotifier {
   String? get error => _error;
 
   SportsProvider() {
-    _loadMockData();
+    _loadSports();
   }
 
   // Mock data for demonstration - replace with real API calls
-  void _loadMockData() {
+  void _loadSports() {
     _sports = [
-      Sport(
-        name: 'Tennis',
-        icon: Icons.sports_tennis,
-        color: Colors.red,
-        competitions: [
-          Competition(
-            name: 'Australian Open',
-            description: 'Wimbledon, Australian Open, US Open',
-            season: '2024',
-            sportType: 'tennis',
-            teams: [
-              Team(name: 'A. Zverev', city: 'Deutschland'),
-              Team(name: 'N. Djokovic', city: 'Serbien'),
-            ],
-          ),
-          Competition(
-            name: 'Wimbledon',
-            description: 'The Championships',
-            season: '2024',
-            sportType: 'tennis',
-            teams: [],
-          ),
-        ],
-      ),
-      Sport(
-        name: 'Fußball',
-        icon: Icons.sports_soccer,
-        color: Colors.green,
-        competitions: [
-          Competition(
-            name: 'DFB Pokal',
-            description: 'Arminia Bielefeld - VfB Stuttgart: 3:0',
-            season: '2023/24',
-            sportType: 'football',
-            teams: [
-              Team(name: 'VfB Stuttgart', city: 'Stuttgart', league: 'Bundesliga'),
-              Team(name: 'Arminia Bielefeld', city: 'Bielefeld', league: '2. Bundesliga'),
-            ],
-          ),
-          Competition(
-            name: 'Bundesliga',
-            description: '1. Liga, 2. Liga',
-            season: '2023/24',
-            sportType: 'football',
-            teams: [],
-          ),
-        ],
-      ),
-      Sport(
-        name: 'Badminton',
-        icon: Icons.sports_tennis,
-        color: Colors.blue,
-        competitions: [
-          Competition(
-            name: 'BWF World Championships',
-            description: '1. Bundesliga - Bundesliga',
-            season: '2024',
-            sportType: 'badminton',
-            teams: [],
-          ),
-        ],
-      ),
-      Sport(
-        name: 'Basketball',
-        icon: Icons.sports_basketball,
-        color: Colors.orange,
-        competitions: [
-          Competition(
-            name: 'NBA',
-            description: 'NBA, WNBA, Euroleague',
-            season: '2023/24',
-            sportType: 'basketball',
-            teams: [],
-          ),
-        ],
-      ),
-      Sport(
-        name: 'Spikeball',
-        icon: Icons.sports_volleyball,
-        color: Colors.purple,
-        competitions: [
-          Competition(
-            name: 'Spikeball Tour',
-            description: '1. Liga, 2. Liga',
-            season: '2024',
-            sportType: 'spikeball',
-            teams: [],
-          ),
-        ],
-      ),
-      Sport(
-        name: 'Rugby',
-        icon: Icons.sports_rugby,
-        color: Colors.brown,
-        competitions: [
-          Competition(
-            name: 'Six Nations',
-            description: '1. Liga, 2. Liga',
-            season: '2024',
-            sportType: 'rugby',
-            teams: [],
-          ),
-        ],
-      ),
-      Sport(
-        name: 'Tischtennis',
-        icon: Icons.sports_tennis,
-        color: Colors.teal,
-        competitions: [
-          Competition(
-            name: 'Bundesliga',
-            description: '1. Liga, 2. Liga',
-            season: '2023/24',
-            sportType: 'tabletennis',
-            teams: [],
-          ),
-        ],
-      ),
-      Sport(
-        name: 'Turnen',
-        icon: Icons.sports_gymnastics,
-        color: Colors.pink,
-        competitions: [
-          Competition(
-            name: 'World Championships',
-            description: 'WM, EM',
-            season: '2024',
-            sportType: 'gymnastics',
-            teams: [],
-          ),
-        ],
-      ),
-      Sport(
-        name: 'Reiten',
-        icon: Icons.directions_run,
-        color: Colors.amber,
-        competitions: [
-          Competition(
-            name: 'Deutsche Meisterschaft',
-            description: 'Deutsche Meister...',
-            season: '2024',
-            sportType: 'equestrian',
-            teams: [],
-          ),
-        ],
-      ),
+      Sport(id: '1', name: 'Fußball', competitions:[]),
+      Sport(id: '2', name: 'Tennis', competitions:[]),
+      Sport(id: '3', name: 'Badminton', competitions:[]),
+      Sport(id: '4', name: 'Basketball', competitions:[]),
+      Sport(id: '5', name: 'Spikeball', competitions:[]),
+      Sport(id: '6', name: 'Rugby', competitions:[]),
+      Sport(id: '7', name: 'Baseball', competitions:[]),
+      Sport(id: '8', name: 'Formel 1', competitions:[]),
+      Sport(id: '9', name: 'Handball', competitions:[]),
+      Sport(id: '10', name: 'American Football', competitions:[]),
     ];
     notifyListeners();
   }
@@ -191,7 +55,7 @@ class SportsProvider extends ChangeNotifier {
     } catch (e) {
       _error = 'Network error: $e';
       // Keep mock data if API fails
-      _loadMockData();
+      _loadSports();
     }
 
     _isLoading = false;

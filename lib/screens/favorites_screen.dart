@@ -117,8 +117,7 @@ class FavoritesScreen extends StatelessWidget {
                     builder: (context) => CompetitionsScreen(
                       sport: Sport(
                         name: title,
-                        icon: icon,
-                        color: color,
+                        //Icon and color are not used in this context, but can be added if needed
                         competitions: [competition],
                       ),
                     ),

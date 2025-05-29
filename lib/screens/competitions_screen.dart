@@ -3,12 +3,14 @@ import 'package:provider/provider.dart';
 import '../models/sport.dart';
 import '../providers/favorites_provider.dart';
 import 'teams_screen.dart';
+import '../services/api_service.dart';
 
 class CompetitionsScreen extends StatelessWidget {
   final Sport sport;
+  final List<Competition> competitions;
 
-  const CompetitionsScreen({super.key, required this.sport});
-
+  const CompetitionsScreen({super.key, required this.sport, required this.competitions});
+  competitions = fetchCompetitions(sport.name);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +22,7 @@ class CompetitionsScreen extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: sport.competitions.length,
+        itemCount: competitions.length,
         itemBuilder: (context, index) {
           final competition = sport.competitions[index];
           return Consumer<FavoritesProvider>(
@@ -30,10 +32,6 @@ class CompetitionsScreen extends StatelessWidget {
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: sport.color,
-                    child: Icon(sport.icon, color: Colors.white),
-                  ),
                   title: Text(
                     competition.name,
                     style: const TextStyle(fontWeight: FontWeight.bold),
@@ -78,7 +76,6 @@ class CompetitionsScreen extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => TeamsScreen(
                           competition: competition,
-                          sportColor: sport.color,
                         ),
                       ),
                     );

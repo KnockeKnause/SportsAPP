@@ -5,12 +5,10 @@ import '../providers/favorites_provider.dart';
 
 class TeamsScreen extends StatelessWidget {
   final Competition competition;
-  final Color sportColor;
 
   const TeamsScreen({
     super.key, 
     required this.competition,
-    required this.sportColor,
   });
 
   @override
@@ -61,7 +59,6 @@ class TeamsScreen extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 12),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: sportColor,
                           child: Text(
                             team.name.substring(0, 1).toUpperCase(),
                             style: const TextStyle(

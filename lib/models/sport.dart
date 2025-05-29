@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 class Sport {
   final String id;
   final String name;
-  final IconData icon;
-  final Color color;
+  //final ImageProvider? image;
   final List<Competition> competitions;
 
   Sport({
     String? id,
     required this.name,
-    required this.icon,
-    required this.color,
     required this.competitions,
   }) : id = id ?? name.toLowerCase().replaceAll(' ', '_');
 
@@ -19,8 +16,6 @@ class Sport {
     return Sport(
       id: json['id'],
       name: json['name'],
-      icon: _getIconFromString(json['icon']),
-      color: Color(json['color']),
       competitions: (json['competitions'] as List)
           .map((c) => Competition.fromJson(c))
           .toList(),
@@ -31,17 +26,8 @@ class Sport {
     return {
       'id': id,
       'name': name,
-      'icon': icon.codePoint,
-      'color': color,
       'competitions': competitions.map((c) => c.toJson()).toList(),
     };
-  }
-
-  static IconData _getIconFromString(dynamic iconData) {
-    if (iconData is int) {
-      return IconData(iconData, fontFamily: 'MaterialIcons');
-    }
-    return Icons.sports;
   }
 }
 

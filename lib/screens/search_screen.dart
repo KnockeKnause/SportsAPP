@@ -4,6 +4,7 @@ import '../providers/sports_provider.dart';
 import '../models/sport.dart';
 import '../widgets/sport_card.dart';
 import 'competitions_screen.dart';
+import '../services/api_service.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -92,11 +93,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     final sport = _filteredSports[index];
                     return SportCard(
                       sport: sport,
+                      competitions = fetchCopmetitions(sport.name),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CompetitionsScreen(sport: sport),
+                            builder: (context) => CompetitionsScreen(sport: sport, competitions: competitions,),
                           ),
                         );
                       },
