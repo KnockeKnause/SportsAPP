@@ -19,7 +19,7 @@ class SportsProvider extends ChangeNotifier {
   // Mock data for demonstration - replace with real API calls
   void _loadSports() {
     _sports = [
-      Sport(id: '1', name: 'Fußball', competitions:[]),
+      Sport(id: '2023', name: 'Fußball', competitions:[]),
       Sport(id: '2', name: 'Tennis', competitions:[]),
       Sport(id: '3', name: 'Badminton', competitions:[]),
       Sport(id: '4', name: 'Basketball', competitions:[]),
@@ -63,7 +63,7 @@ class SportsProvider extends ChangeNotifier {
   }
 
   // Method to fetch teams for a specific competition
-  Future<void> fetchTeamsForCompetition(String competitionId) async {
+  /* Future<void> fetchTeamsForCompetition(String competitionId) async {
     try {
       final response = await http.get(
         Uri.parse('https://api.example.com/competitions/$competitionId/teams'),
@@ -85,7 +85,6 @@ class SportsProvider extends ChangeNotifier {
                 description: competition.description,
                 season: competition.season,
                 sportType: competition.sportType,
-                teams: teams,
               );
               
               // Replace the competition in the list
@@ -104,5 +103,5 @@ class SportsProvider extends ChangeNotifier {
 
   void refreshData() {
     fetchSportsFromApi();
-  }
+  } */
 }

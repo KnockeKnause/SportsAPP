@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Sport {
   final String id;
   final String name;
@@ -37,7 +35,6 @@ class Competition {
   final String? description;
   final String? season;
   final String sportType;
-  final List<Team> teams;
 
   Competition({
     String? id,
@@ -45,19 +42,15 @@ class Competition {
     this.description,
     this.season,
     required this.sportType,
-    this.teams = const [],
   }) : id = id ?? '${sportType}_${name.toLowerCase().replaceAll(' ', '_')}';
 
   factory Competition.fromJson(Map<String, dynamic> json) {
     return Competition(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      season: json['season'],
-      sportType: json['sportType'],
-      teams: (json['teams'] as List?)
-          ?.map((t) => Team.fromJson(t))
-          .toList() ?? [],
+      id: json['idLeague'],
+      name: json['strLeague'] ?? '',
+      description: json['strDescriptionEN'],
+      season: json['strCurrentSeason'],
+      sportType: json['strSport'] ?? '',
     );
   }
 
@@ -68,7 +61,6 @@ class Competition {
       'description': description,
       'season': season,
       'sportType': sportType,
-      'teams': teams.map((t) => t.toJson()).toList(),
     };
   }
 }

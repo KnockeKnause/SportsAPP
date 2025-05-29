@@ -3,14 +3,12 @@ import 'package:provider/provider.dart';
 import '../models/sport.dart';
 import '../providers/favorites_provider.dart';
 import 'teams_screen.dart';
-import '../services/api_service.dart';
 
 class CompetitionsScreen extends StatelessWidget {
   final Sport sport;
   final List<Competition> competitions;
 
   const CompetitionsScreen({super.key, required this.sport, required this.competitions});
-  competitions = fetchCompetitions(sport.name);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +22,7 @@ class CompetitionsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         itemCount: competitions.length,
         itemBuilder: (context, index) {
-          final competition = sport.competitions[index];
+          final competition = competitions[index];
           return Consumer<FavoritesProvider>(
             builder: (context, favoritesProvider, child) {
               final isFavorite = favoritesProvider.isCompetitionFavorite(competition.id);
@@ -39,8 +37,7 @@ class CompetitionsScreen extends StatelessWidget {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (competition.description != null)
-                        Text(competition.description!),
+                      Text(competition.sportType),
                       if (competition.season != null)
                         Text(
                           'Saison: ${competition.season}',
@@ -75,7 +72,7 @@ class CompetitionsScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => TeamsScreen(
-                          competition: competition,
+                          competition: competition, teams: const [],
                         ),
                       ),
                     );

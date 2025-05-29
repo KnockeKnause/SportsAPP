@@ -5,10 +5,12 @@ import '../providers/favorites_provider.dart';
 
 class TeamsScreen extends StatelessWidget {
   final Competition competition;
+  final List<dynamic> teams;
 
   const TeamsScreen({
     super.key, 
     required this.competition,
+    required this.teams,
   });
 
   @override
@@ -20,7 +22,7 @@ class TeamsScreen extends StatelessWidget {
             ? Colors.black 
             : const Color(0xFF4ECDC4),
       ),
-      body: competition.teams.isEmpty
+      body: teams.isEmpty
           ? const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -48,9 +50,9 @@ class TeamsScreen extends StatelessWidget {
             )
           : ListView.builder(
               padding: const EdgeInsets.all(16),
-              itemCount: competition.teams.length,
+              itemCount: teams.length,
               itemBuilder: (context, index) {
-                final team = competition.teams[index];
+                final team = teams[index];
                 return Consumer<FavoritesProvider>(
                   builder: (context, favoritesProvider, child) {
                     final isFavorite = favoritesProvider.isTeamFavorite(team.id);

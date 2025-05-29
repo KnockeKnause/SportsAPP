@@ -5,7 +5,7 @@ class SportCard extends StatelessWidget {
   final Sport sport;
   final VoidCallback onTap;
 
-  const SportCard(required Sport sport, {
+  const SportCard({
     super.key,
     required this.sport,
     required this.onTap,

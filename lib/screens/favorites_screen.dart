@@ -60,11 +60,11 @@ class FavoritesScreen extends StatelessWidget {
                 ),
               
               // Football Section
-              if (favoritesProvider.favoriteCompetitions.any((c) => c.sportType == 'football'))
+              if (favoritesProvider.favoriteCompetitions.any((c) => c.sportType == 'Soccer'))
                 _buildSportSection(
                   context,
                   'Fußball',
-                  favoritesProvider.favoriteCompetitions.where((c) => c.sportType == 'football').toList(),
+                  favoritesProvider.favoriteCompetitions.where((c) => c.sportType == 'Soccer').toList(),
                   Icons.sports_soccer,
                   Colors.green,
                 ),
@@ -108,25 +108,24 @@ class FavoritesScreen extends StatelessWidget {
                 child: Icon(icon, color: Colors.white),
               ),
               title: Text(competition.name),
-              subtitle: Text(competition.description ?? ''),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CompetitionsScreen(
+                    builder: (context) => CompetitionsScreen( //Spiele Screen aufrufen
                       sport: Sport(
-                        name: title,
-                        //Icon and color are not used in this context, but can be added if needed
-                        competitions: [competition],
-                      ),
+                        name: title, competitions: [],
+                        //Icon and color are not used in this context, but can be added if needed,
+                      ), 
+                      competitions: [Competition(name: competition.name, description: competition.description, id: competition.id, sportType: competition.sportType, season: competition.season)],
                     ),
                   ),
                 );
               },
             ),
           ),
-        ).toList(),
+        ),
         const SizedBox(height: 16),
       ],
     );

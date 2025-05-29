@@ -93,8 +93,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     final sport = _filteredSports[index];
                     return SportCard(
                       sport: sport,
-                      competitions = fetchCopmetitions(sport.name),
-                      onTap: () {
+                      onTap: () async {
+                        final competitions = await ApiService.fetchCompetitions(sport.id);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

@@ -8,8 +8,6 @@ class ApiService {
 
   // Headers für alle API-Anfragen
   static Map<String, String> get headers => {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
     'x-rapidapi-key': '39c957bce6f19bce08a4858574b55815',
     'x-rapidapi-host': 'v3.football.api-sports.io'
     // Fügen Sie hier API-Keys oder Authentifizierungs-Header hinzu
@@ -43,14 +41,18 @@ class ApiService {
     try {
       final response = await http
           .get(
-            Uri.parse('https://v3.football.api-sports.io/teams?id=1'),
-            headers: headers,
+            Uri.parse('https://www.thesportsdb.com/api/v1/json/123/search_all_leagues.php?c=England&s=Soccer'),
           )
           .timeout(timeout);
 
       if (response.statusCode == 200) {
-        final List<dynamic> competitionsJson = json.decode(response.body);
-        return competitionsJson.map((c) => Competition.fromJson(c)).toList();
+        final Map<String, dynamic> jsonBody = json.decode(response.body);
+        final List<dynamic> responseList = jsonBody['countries'];
+      // Extrahiere alle Ligen als Competition-Objekte
+      final List<Competition> competitions = responseList
+          .map((item) => Competition.fromJson(item))
+          .toList();
+      return competitions;
       } else {
         throw ApiException('Failed to fetch competitions: ${response.statusCode}');
       }
