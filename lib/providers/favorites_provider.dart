@@ -41,6 +41,8 @@ class FavoritesProvider extends ChangeNotifier {
   void addTeamToFavorites(Team team) {
     if (!isTeamFavorite(team.id)) {
       _favoriteTeams.add(team);
+      print(_favoriteTeams);
+      print('Team added to favorites: ${team.name}');
       _saveFavorites();
       notifyListeners();
     }

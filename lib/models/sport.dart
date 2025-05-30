@@ -1,17 +1,22 @@
 class Sport {
   final String id;
   final String name;
+  final String? apiName;
+  //final Bool isTeamSport;
   //final ImageProvider? image;
   final List<Competition> competitions;
 
-  Sport({
+  Sport( {
     String? id,
+    this.apiName,
     required this.name,
+    //required this.isTeamSport,
     required this.competitions,
   }) : id = id ?? name.toLowerCase().replaceAll(' ', '_');
 
   factory Sport.fromJson(Map<String, dynamic> json) {
     return Sport(
+      apiName: json['api_name'] ?? json['name'].toLowerCase().replaceAll(' ', '_'),
       id: json['id'],
       name: json['name'],
       competitions: (json['competitions'] as List)
@@ -25,6 +30,7 @@ class Sport {
       'id': id,
       'name': name,
       'competitions': competitions.map((c) => c.toJson()).toList(),
+      'apiName': apiName,
     };
   }
 }
@@ -68,25 +74,22 @@ class Competition {
 class Team {
   final String id;
   final String name;
-  final String? city;
-  final String? league;
-  final String? country;
+  final String? sport;
+  final String? logoUrl;
 
   Team({
     String? id,
+    this.logoUrl,
+    this.sport,
     required this.name,
-    this.city,
-    this.league,
-    this.country,
   }) : id = id ?? name.toLowerCase().replaceAll(' ', '_');
 
   factory Team.fromJson(Map<String, dynamic> json) {
     return Team(
-      id: json['id'],
-      name: json['name'],
-      city: json['city'],
-      league: json['league'],
-      country: json['country'],
+      id: json['idTeam'],
+      name: json['strTeam'] ?? '',
+      sport: json['strSport'] ?? '',
+      logoUrl: json['strBadge'],
     );
   }
 
@@ -94,9 +97,28 @@ class Team {
     return {
       'id': id,
       'name': name,
-      'city': city,
-      'league': league,
-      'country': country,
+      'sport': sport,
+      'logoUrl': logoUrl,
     };
+  }
+}
+
+class Country {
+  final String apiName;
+  final String name;
+  final String? flagUrl;
+
+  Country({
+    required this.apiName,
+    required this.name,
+    this.flagUrl,
+  });
+
+  factory Country.fromJson(Map<String, dynamic> json) {
+    return Country(
+      apiName: json['api_name'] ?? json['name'].toLowerCase().replaceAll(' ', '_'),
+      name: json['name'],
+      flagUrl: json['flag_url'],
+    );
   }
 }

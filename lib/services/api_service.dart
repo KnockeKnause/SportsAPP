@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/sport.dart';
 
 class ApiService {
-  static const String baseUrl = 'https://v3.football.api-sports.io/'; // Ersetzen Sie mit Ihrer API-URL
+  static const String baseUrl = 'https://www.thesportsdb.com/api/v1/json/123'; // Ersetzen Sie mit Ihrer API-URL
   static const Duration timeout = Duration(seconds: 10);
 
   // Headers für alle API-Anfragen
@@ -35,48 +35,50 @@ class ApiService {
       throw ApiException('Network error: $e');
     }
   }
+  
+  // Alle Länder abrufen
+
+  static Future<List<Country>> fetchCountries(String sport) async {
+    final response = await http.get(
+      Uri.parse('your-api-endpoint/countries?sport_id=$sport'),
+    );
+    
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => Country.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load countries');
+    }
+  }
 
   // Wettbewerbe für eine Sportart abrufen
-  static Future<List<Competition>> fetchCompetitions(String sportId) async {
+  static Future<List<Competition>> fetchCompetitions(String sportName, String countryApiName) async {
     try {
-      final response = await http
-          .get(
-            Uri.parse('https://www.thesportsdb.com/api/v1/json/123/search_all_leagues.php?c=England&s=Soccer'),
-          )
-          .timeout(timeout);
+      http.Response response;
+      if (countryApiName.isEmpty) {
+        response = await http
+            .get(
+              Uri.parse('https://www.thesportsdb.com/api/v1/json/123/search_all_leagues.php?s=$sportName'),
+            )
+            .timeout(timeout);
+      } else {
+        response = await http
+            .get(
+              Uri.parse('https://www.thesportsdb.com/api/v1/json/123/search_all_leagues.php?c=$countryApiName&s=$sportName'),
+            )
+            .timeout(timeout);
+      }
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonBody = json.decode(response.body);
         final List<dynamic> responseList = jsonBody['countries'];
-      // Extrahiere alle Ligen als Competition-Objekte
-      final List<Competition> competitions = responseList
-          .map((item) => Competition.fromJson(item))
-          .toList();
-      return competitions;
+        // Extrahiere alle Ligen als Competition-Objekte
+        final List<Competition> competitions = responseList
+            .map((item) => Competition.fromJson(item))
+            .toList();
+        return competitions;
       } else {
         throw ApiException('Failed to fetch competitions: ${response.statusCode}');
-      }
-    } catch (e) {
-      if (e is ApiException) rethrow;
-      throw ApiException('Network error: $e');
-    }
-  }
-
-  // Teams für einen Wettbewerb abrufen
-  static Future<List<Team>> fetchTeams(String competitionId) async {
-    try {
-      final response = await http
-          .get(
-            Uri.parse('$baseUrl/competitions/$competitionId/teams'),
-            headers: headers,
-          )
-          .timeout(timeout);
-
-      if (response.statusCode == 200) {
-        final List<dynamic> teamsJson = json.decode(response.body);
-        return teamsJson.map((t) => Team.fromJson(t)).toList();
-      } else {
-        throw ApiException('Failed to fetch teams: ${response.statusCode}');
       }
     } catch (e) {
       if (e is ApiException) rethrow;
@@ -106,21 +108,26 @@ class ApiService {
     }
   }
 
-  // Team-Details abrufen
-  static Future<Team> fetchTeamDetails(String teamId) async {
+  //Teams für Competition abrufen 
+  static Future<List<Team>> fetchTeams(String competition) async {
     try {
       final response = await http
           .get(
-            Uri.parse('$baseUrl/teams/$teamId'),
-            headers: headers,
+            Uri.parse('$baseUrl/search_all_teams.php?id=$competition'),
+            //headers: headers,
           )
           .timeout(timeout);
 
-      if (response.statusCode == 200) {
-        final teamJson = json.decode(response.body);
-        return Team.fromJson(teamJson);
+if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonBody = json.decode(response.body);
+        final List<dynamic> responseList = jsonBody['teams'];
+
+        final List<Team> teams = responseList
+            .map((item) => Team.fromJson(item))
+            .toList();
+        return teams;
       } else {
-        throw ApiException('Failed to fetch team details: ${response.statusCode}');
+        throw ApiException('Failed to fetch teams: ${response.statusCode}');
       }
     } catch (e) {
       if (e is ApiException) rethrow;
@@ -128,49 +135,8 @@ class ApiService {
     }
   }
 
-  // Wettbewerb-Details abrufen
-  static Future<Competition> fetchCompetitionDetails(String competitionId) async {
-    try {
-      final response = await http
-          .get(
-            Uri.parse('$baseUrl/competitions/$competitionId'),
-            headers: headers,
-          )
-          .timeout(timeout);
-
-      if (response.statusCode == 200) {
-        final competitionJson = json.decode(response.body);
-        return Competition.fromJson(competitionJson);
-      } else {
-        throw ApiException('Failed to fetch competition details: ${response.statusCode}');
-      }
-    } catch (e) {
-      if (e is ApiException) rethrow;
-      throw ApiException('Network error: $e');
-    }
-  }
-
-  // Aktuelle Ergebnisse/Standings abrufen (optional)
-  static Future<Map<String, dynamic>> fetchStandings(String competitionId) async {
-    try {
-      final response = await http
-          .get(
-            Uri.parse('$baseUrl/competitions/$competitionId/standings'),
-            headers: headers,
-          )
-          .timeout(timeout);
-
-      if (response.statusCode == 200) {
-        return json.decode(response.body);
-      } else {
-        throw ApiException('Failed to fetch standings: ${response.statusCode}');
-      }
-    } catch (e) {
-      if (e is ApiException) rethrow;
-      throw ApiException('Network error: $e');
-    }
-  }
 }
+
 
 // Custom Exception für API-Fehler
 class ApiException implements Exception {

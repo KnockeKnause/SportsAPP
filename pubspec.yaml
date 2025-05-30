@@ -26,6 +26,9 @@ dependencies:
   # Icons
   cupertino_icons: ^1.0.2
 
+  # Image loading
+  cached_network_image: ^3.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

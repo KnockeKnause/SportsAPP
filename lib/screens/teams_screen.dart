@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/sport.dart';
@@ -5,7 +6,7 @@ import '../providers/favorites_provider.dart';
 
 class TeamsScreen extends StatelessWidget {
   final Competition competition;
-  final List<dynamic> teams;
+  final List<Team> teams;
 
   const TeamsScreen({
     super.key, 
@@ -61,32 +62,42 @@ class TeamsScreen extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 12),
                       child: ListTile(
                         leading: CircleAvatar(
-                          child: Text(
-                            team.name.substring(0, 1).toUpperCase(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          backgroundColor: Colors.grey[400],
+                          child: team.logoUrl != null && team.logoUrl!.isNotEmpty
+                              ? ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: team.logoUrl!,
+                                    width: 30,
+                                    height: 30,
+                                    fit: BoxFit.contain,
+                                    placeholder: (context, url) => const SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) => Text(
+                                      team.name.substring(0, 1).toUpperCase(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  team.name.substring(0, 1).toUpperCase(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                         title: Text(
                           team.name,
                           style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (team.city != null)
-                              Text('Stadt: ${team.city}'),
-                            if (team.league != null)
-                              Text(
-                                'Liga: ${team.league}',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                          ],
                         ),
                         trailing: IconButton(
                           icon: Icon(

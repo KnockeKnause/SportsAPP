@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_sports_app/screens/competitions_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/sports_provider.dart';
 import '../models/sport.dart';
 import '../widgets/sport_card.dart';
-import 'competitions_screen.dart';
+import 'country_screen.dart';
 import '../services/api_service.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -52,7 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
             controller: _searchController,
             onChanged: _filterSports,
             decoration: InputDecoration(
-              hintText: 'Suche...',
+              hintText: 'Sportart suchen...',
               suffixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -94,13 +95,25 @@ class _SearchScreenState extends State<SearchScreen> {
                     return SportCard(
                       sport: sport,
                       onTap: () async {
-                        final competitions = await ApiService.fetchCompetitions(sport.id);
-                        Navigator.push(
+                        if (sport.name =='Fußball') {
+                          Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CompetitionsScreen(sport: sport, competitions: competitions,),
+                            builder: (context) => CountrySelectionScreen(sport: sport)
                           ),
                         );
+                          return;
+                        }
+                        else {
+                          final competitions = await ApiService.fetchCompetitions(sport.apiName!, '');
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CompetitionsScreen(sport: sport, competitions: competitions)
+                          ),
+                        );
+                          return;
+                        }
                       },
                     );
                   },

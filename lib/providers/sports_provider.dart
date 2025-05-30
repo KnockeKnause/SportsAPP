@@ -19,16 +19,15 @@ class SportsProvider extends ChangeNotifier {
   // Mock data for demonstration - replace with real API calls
   void _loadSports() {
     _sports = [
-      Sport(id: '2023', name: 'Fußball', competitions:[]),
-      Sport(id: '2', name: 'Tennis', competitions:[]),
-      Sport(id: '3', name: 'Badminton', competitions:[]),
-      Sport(id: '4', name: 'Basketball', competitions:[]),
-      Sport(id: '5', name: 'Spikeball', competitions:[]),
-      Sport(id: '6', name: 'Rugby', competitions:[]),
-      Sport(id: '7', name: 'Baseball', competitions:[]),
-      Sport(id: '8', name: 'Formel 1', competitions:[]),
-      Sport(id: '9', name: 'Handball', competitions:[]),
-      Sport(id: '10', name: 'American Football', competitions:[]),
+      Sport(id: '1', apiName: 'Soccer', name: 'Fußball', competitions:[]),
+      Sport(id: '2', apiName: 'Tennis', name: 'Tennis', competitions:[]),
+      Sport(id: '4', apiName: 'Basketball',name: 'Basketball', competitions:[]),
+      Sport(id: '5', apiName: 'Spikeball',name: 'Spikeball', competitions:[]),
+      Sport(id: '6', apiName: 'Rugby',name: 'Rugby', competitions:[]),
+      Sport(id: '7', apiName: 'Baseball',name: 'Baseball', competitions:[]),
+      Sport(id: '8', apiName: 'Formel 1',name: 'Formel 1', competitions:[]),
+      Sport(id: '9', apiName: 'Handball',name: 'Handball', competitions:[]),
+      Sport(id: '10', apiName: 'American Football',name: 'American Football', competitions:[]),
     ];
     notifyListeners();
   }
