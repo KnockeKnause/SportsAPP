@@ -27,7 +27,10 @@ class CompetitionsScreen extends StatelessWidget {
           final competition = competitions[index];
           return Consumer<FavoritesProvider>(
             builder: (context, favoritesProvider, child) {
-              final isFavorite = favoritesProvider.isCompetitionFavorite(competition.id);              
+              final isFavorite = favoritesProvider.isCompetitionFavorite(competition.id);
+              final favorites = favoritesProvider.favoriteCompetitions;
+              print ('Favorites: $favorites');
+              print(isFavorite);            
               return Card(
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(

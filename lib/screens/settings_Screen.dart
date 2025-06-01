@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
+import '../providers/favorites_provider.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -96,12 +97,13 @@ class SettingsScreen extends StatelessWidget {
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.refresh),
-                    title: const Text('Daten aktualisieren'),
-                    subtitle: const Text('Lade die neuesten Informationen'),
+                    title: const Text('Favoriten löschen'),
+                    subtitle: const Text('Lösche sämtliche Favoriten'),
                     onTap: () {
+                      Provider.of<FavoritesProvider>(context, listen: false).clearAllFavorites();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Daten werden aktualisiert...'),
+                          content: Text('Daten werden gelöscht...'),
                           duration: Duration(seconds: 2),
                         ),
                       );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
-import 'favorites_screen.dart';
+import 'favorites_screen2.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
 
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     const FavoritesScreen(),
     const SearchScreen(),
-    SettingsScreen(),
+    const SettingsScreen(),
   ];
 
   @override

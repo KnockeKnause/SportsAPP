@@ -38,37 +38,70 @@ class Sport {
 class Competition {
   final String id;
   final String name;
-  final String? description;
   final String? season;
   final String sportType;
 
   Competition({
-    String? id,
+    required this.id,
     required this.name,
-    this.description,
     this.season,
     required this.sportType,
-  }) : id = id ?? '${sportType}_${name.toLowerCase().replaceAll(' ', '_')}';
+  });
 
+  @override
+  String toString() {
+    return 'Competition{id: $id, name: $name, season: $season, sportType: $sportType}';
+  }
+
+  // Universelle fromJson die beide Formate unterstützt
   factory Competition.fromJson(Map<String, dynamic> json) {
-    return Competition(
-      id: json['idLeague'],
-      name: json['strLeague'] ?? '',
-      description: json['strDescriptionEN'],
-      season: json['strCurrentSeason'],
-      sportType: json['strSport'] ?? '',
+
+    String id;
+    String name;
+    String? season;
+    String sportType;
+
+    // Prüfe ob es API-Format oder SharedPreferences-Format ist
+    if (json.containsKey('idLeague')) {
+      // API-Format
+      id = json['idLeague']?.toString() ?? '';
+      name = json['strLeague']?.toString() ?? '';
+      season = json['strCurrentSeason']?.toString();
+      sportType = json['strSport']?.toString() ?? '';
+    } else {
+      // SharedPreferences-Format
+      id = json['id']?.toString() ?? '';
+      name = json['name']?.toString() ?? '';
+      season = json['season']?.toString();
+      sportType = json['sportType']?.toString() ?? '';
+    }
+    
+    final competition = Competition(
+      id: id,
+      name: name,
+      season: season,
+      sportType: sportType,
     );
+    return competition;
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
-      'description': description,
       'season': season,
       'sportType': sportType,
     };
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Competition && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class Team {
@@ -84,13 +117,40 @@ class Team {
     required this.name,
   }) : id = id ?? name.toLowerCase().replaceAll(' ', '_');
 
+  @override
+  String toString() {
+    return 'Team{id: $id, name: $name, sport: $sport, logoUrl: $logoUrl}';
+  }
+
   factory Team.fromJson(Map<String, dynamic> json) {
-    return Team(
-      id: json['idTeam'],
-      name: json['strTeam'] ?? '',
-      sport: json['strSport'] ?? '',
-      logoUrl: json['strBadge'],
+
+    String id;
+    String name;
+    String? sport;
+    String? logoUrl;
+
+    // Prüfe ob es API-Format oder SharedPreferences-Format ist
+   if (json.containsKey('idTeam')) { 
+      id= json['idTeam']?.toString() ?? '';
+      name= json['strTeam']?.toString() ?? '';
+      sport= json['strSport']?.toString() ?? '';
+      logoUrl= json['strBadge']?.toString() ?? '';
+    } else {
+      
+        id= json['id']?.toString() ?? '';
+        name= json['name']?.toString() ?? '';
+        sport= json['sport']?.toString();
+        logoUrl= json['logoUrl']?.toString();
+    }
+
+    final team = Team(
+      id: id,
+      name: name,
+      sport: sport,
+      logoUrl: logoUrl,
     );
+    return team;
+
   }
 
   Map<String, dynamic> toJson() {

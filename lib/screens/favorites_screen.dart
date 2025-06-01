@@ -118,7 +118,7 @@ class FavoritesScreen extends StatelessWidget {
                         name: title, competitions: [],
                         //Icon and color are not used in this context, but can be added if needed,
                       ), 
-                      competitions: [Competition(name: competition.name, description: competition.description, id: competition.id, sportType: competition.sportType, season: competition.season)],
+                      competitions: [Competition(name: competition.name, id: competition.id, sportType: competition.sportType, season: competition.season)],
                     ),
                   ),
                 );

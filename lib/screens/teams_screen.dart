@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../models/sport.dart';
-import '../providers/favorites_provider.dart';
+import '../widgets/team_card.dart';
 
 class TeamsScreen extends StatelessWidget {
   final Competition competition;
@@ -14,7 +12,7 @@ class TeamsScreen extends StatelessWidget {
     required this.teams,
   });
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -52,72 +50,7 @@ class TeamsScreen extends StatelessWidget {
           : ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: teams.length,
-              itemBuilder: (context, index) {
-                final team = teams[index];
-                return Consumer<FavoritesProvider>(
-                  builder: (context, favoritesProvider, child) {
-                    final isFavorite = favoritesProvider.isTeamFavorite(team.id);
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
-                          child: team.logoUrl != null && team.logoUrl!.isNotEmpty
-                              ? CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    radius: 40,
-                                  child: CachedNetworkImage(
-                                    imageUrl: team.logoUrl!,
-                                    width: 40,
-                                    height: 40,
-                                    fit: BoxFit.contain,
-                                    placeholder: (context, url) => const SizedBox(
-                                      width: 40,
-                                      height: 40,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    errorWidget: (context, url, error) => Text(
-                                      team.name.substring(0, 1).toUpperCase(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Text(
-                                  team.name.substring(0, 1).toUpperCase(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                        ),
-                        title: Text(
-                          team.name,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        trailing: IconButton(
-                          icon: Icon(
-                            isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: isFavorite ? Colors.red : null,
-                          ),
-                          onPressed: () {
-                            if (isFavorite) {
-                              favoritesProvider.removeTeamFromFavorites(team.id);
-                            } else {
-                              favoritesProvider.addTeamToFavorites(team);
-                            }
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
+              itemBuilder: (context, index) => TeamCard(team: teams[index]),
             ),
     );
   }
