@@ -141,6 +141,33 @@ class ApiService {
             throw ApiException('Network error: $e');
           }
   }
+  // Spieler für eine Competition abrufen
+  static Future<List<Player>> fetchPlayers(String competitionId) async {
+    try {
+      final response = await http
+          .get(
+            Uri.parse('$baseUrl/lookup_all_players.php?id=$competitionId'),
+          )
+          .timeout(timeout);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonBody = json.decode(response.body);
+        final dynamic responseList = jsonBody['player'];
+        
+        if (responseList == null) {
+          // Kein Ergebnis, "players": null
+          throw ApiException('Keine Spieler gefunden für diese Anfrage.');
+        }
+
+        return responseList.map((item) => Player.fromJson(item)).toList();
+      } else {
+        throw ApiException('Failed to fetch players: ${response.statusCode}');
+      }
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException('Network error: $e');
+    }
+  }
 
 }
 

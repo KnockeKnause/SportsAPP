@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
-import 'favorites_screen2.dart';
+import 'favorites_screen.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
 

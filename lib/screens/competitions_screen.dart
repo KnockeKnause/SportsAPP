@@ -27,12 +27,9 @@ class CompetitionsScreen extends StatelessWidget {
           final competition = competitions[index];
           return Consumer<FavoritesProvider>(
             builder: (context, favoritesProvider, child) {
-              final isFavorite = favoritesProvider.isCompetitionFavorite(competition.id);
-              final favorites = favoritesProvider.favoriteCompetitions;
-              print ('Favorites: $favorites');
-              print(isFavorite);            
+              final isFavorite = favoritesProvider.isCompetitionFavorite(competition.id);    
               return Card(
-                margin: const EdgeInsets.only(bottom: 12),
+                margin: const EdgeInsets.only(bottom: 16),
                 child: ListTile(
                   title: Text(
                     competition.name,
@@ -41,7 +38,6 @@ class CompetitionsScreen extends StatelessWidget {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(competition.sportType),
                       if (competition.season != null)
                         Text(
                           'Saison: ${competition.season}',
@@ -50,25 +46,6 @@ class CompetitionsScreen extends StatelessWidget {
                             color: Colors.grey[600],
                           ),
                         ),
-                    ],
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? Colors.red : null,
-                        ),
-                        onPressed: () {
-                          if (isFavorite) {
-                            favoritesProvider.removeCompetitionFromFavorites(competition.id);
-                          } else {
-                            favoritesProvider.addCompetitionToFavorites(competition);
-                          }
-                        },
-                      ),
-                      const Icon(Icons.arrow_forward_ios, size: 16),
                     ],
                   ),
                   onTap: () async {

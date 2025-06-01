@@ -2,13 +2,14 @@ class Sport {
   final String id;
   final String name;
   final String? apiName;
-  //final Bool isTeamSport;
+  final String? format;
   //final ImageProvider? image;
   final List<Competition> competitions;
 
   Sport( {
     String? id,
     this.apiName,
+    this.format,
     required this.name,
     //required this.isTeamSport,
     required this.competitions,
@@ -19,6 +20,7 @@ class Sport {
       apiName: json['api_name'] ?? json['name'].toLowerCase().replaceAll(' ', '_'),
       id: json['id'],
       name: json['name'],
+      format: json['format'],
       competitions: (json['competitions'] as List)
           .map((c) => Competition.fromJson(c))
           .toList(),
@@ -29,6 +31,7 @@ class Sport {
     return {
       'id': id,
       'name': name,
+      'format': format,
       'competitions': competitions.map((c) => c.toJson()).toList(),
       'apiName': apiName,
     };
@@ -180,5 +183,112 @@ class Country {
       name: json['name'],
       flagUrl: json['flag_url'],
     );
+  }
+}
+
+class Player {
+  final String id;
+  final String name;
+  final String? teamId;
+  final String? nationality;
+  final String? photoUrl;
+
+  Player({
+    String? id,
+    required this.name,
+    this.teamId,
+    this.nationality,
+    this.photoUrl,
+  }) : id = id ?? name.toLowerCase().replaceAll(' ', '_');
+
+  @override
+  String toString() {
+    return 'Player{id: $id, name: $name, teamId: $teamId, nationality: $nationality, photoUrl: $photoUrl}';
+  }
+
+  factory Player.fromJson(Map<String, dynamic> json) {
+
+  final String id;
+  final String name;
+  final String? teamId;
+  final String? nationality;
+  final String? photoUrl;
+  if (json.containsKey('idPlayer')) {
+    id = json['idPlayer']?.toString() ?? '';
+    name = json['strPlayer']?.toString() ?? '';
+    teamId = json['idTeam']?.toString();
+    nationality = json['strNationality']?.toString()?? '';
+    photoUrl = json['strCutout']?.toString() ?? '';
+  } else {
+    id = json['id']?.toString() ?? '';
+    name = json['name']?.toString() ?? '';
+    teamId = json['teamId']?.toString();
+    nationality = json['nationality']?.toString()?? '';
+    photoUrl = json['photoUrl']?.toString() ?? '';
+  }
+    return Player(
+      id: id,
+      name: name,
+      teamId: teamId,
+      nationality: nationality,
+      photoUrl: photoUrl,
+    );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'teamId': teamId,
+      'nationality': nationality,
+      'photoUrl': photoUrl,
+    };
+  }
+}
+
+class Details {
+  final String strEvent;
+  final String? strHomeTeam;
+  final String? strAwayTeam;
+  final String? strLeague;
+  final String? intHomeScore;
+  final String? intAwayScore;
+  final String? dateEvent;
+  final String? strTimeLocal;
+
+  Details({
+    required this.strEvent,
+    this.strHomeTeam,
+    this.strAwayTeam,
+    this.strLeague,
+    this.intHomeScore,
+    this.intAwayScore,
+    this.dateEvent,
+    this.strTimeLocal,
+  });
+
+  factory Details.fromJson(Map<String, dynamic> json) {
+    return Details(
+      strEvent: json['strEvent'] ?? '',
+      strHomeTeam: json['strHomeTeam'] ?? '',
+      strAwayTeam: json['strAwayTeam'] ?? '',
+      strLeague: json['strLeague'] ?? '',
+      intHomeScore: json['intHomeScore']?.toString(),
+      intAwayScore: json['intAwayScore']?.toString(),
+      dateEvent: json['dateEvent'] ?? '',
+      strTimeLocal: json['strTimeLocal'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'strEvent': strEvent,
+      'strHomeTeam': strHomeTeam,
+      'strAwayTeam': strAwayTeam,
+      'strLeague': strLeague,
+      'intHomeScore': intHomeScore,
+      'intAwayScore': intAwayScore,
+      'dateEvent': dateEvent,
+      'strTimeLocal': strTimeLocal,
+    };
   }
 }

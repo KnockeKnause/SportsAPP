@@ -1,28 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sports_app/providers/favorites_provider.dart';
-import 'package:my_sports_app/screens/detail_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/sport.dart';
 
-class TeamCard extends StatelessWidget {
-  final Team team;
+class PlayerCard extends StatelessWidget {
+  final Player player;
 
-  const TeamCard({super.key, required this.team});
+  const PlayerCard({super.key, required this.player});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<FavoritesProvider>(
       builder: (context, favoritesProvider, child) {
-        final isFavorite = favoritesProvider.isTeamFavorite(team.id);
+        final isFavorite = favoritesProvider.isPlayerFavorite(player.id);
         return Card(
           margin: const EdgeInsets.only(bottom: 12),
           child: ListTile(
-            leading: _buildTeamAvatar(context),
+            leading: _buildPlayerAvatar(context),
             title: Text(
-              team.name,
+              player.name,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
+            subtitle: _buildPlayerInfo(),
             trailing: IconButton(
               icon: Icon(
                 isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -30,36 +30,26 @@ class TeamCard extends StatelessWidget {
               ),
               onPressed: () {
                 if (isFavorite) {
-                  favoritesProvider.removeTeamFromFavorites(team.id);
+                  favoritesProvider.removePlayerFromFavorites(player.id);
                 } else {
-                  favoritesProvider.addTeamToFavorites(team);
+                  favoritesProvider.addPlayerToFavorites(player);
                 }
               },
             ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailScreen(
-                    team: team,
-                  ),
-                ),
-              );
-            },
           ),
         );
       },
     );
   }
 
-  Widget _buildTeamAvatar(BuildContext context) {
-    final hasLogo = team.logoUrl != null && team.logoUrl!.isNotEmpty;
+  Widget _buildPlayerAvatar(BuildContext context) {
+    final hasPhoto = player.photoUrl != null && player.photoUrl!.isNotEmpty;
     
     return CircleAvatar(
       backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
-      child: hasLogo
+      child: hasPhoto
           ? CachedNetworkImage(
-              imageUrl: team.logoUrl!,
+              imageUrl: player.photoUrl!,
               width: 40,
               height: 40,
               fit: BoxFit.contain,
@@ -71,18 +61,34 @@ class TeamCard extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              errorWidget: (context, url, error) => _buildFallbackText(),
+              errorWidget: (context, url, error) => _buildFallbackIcon(),
             )
-          : _buildFallbackText(),
+          : _buildFallbackIcon(),
     );
   }
 
-  Widget _buildFallbackText() {
+  Widget _buildFallbackIcon() {
+    return const Icon(
+      Icons.person,
+      color: Colors.white,
+      size: 24,
+    );
+  }
+
+  Widget? _buildPlayerInfo() {
+    final List<String> infoItems = [];
+    
+    if (player.nationality != null && player.nationality!.isNotEmpty) {
+      infoItems.add(player.nationality!);
+    }
+    
+    if (infoItems.isEmpty) return null;
+    
     return Text(
-      team.name.substring(0, 1).toUpperCase(),
-      style: const TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
+      infoItems.join(' • '),
+      style: TextStyle(
+        color: Colors.grey[600],
+        fontSize: 12,
       ),
     );
   }

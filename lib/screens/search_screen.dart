@@ -6,6 +6,7 @@ import '../models/sport.dart';
 import '../widgets/sport_card.dart';
 import 'country_screen.dart';
 import '../services/api_service.dart';
+import 'package:my_sports_app/screens/player_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -95,21 +96,28 @@ class _SearchScreenState extends State<SearchScreen> {
                     return SportCard(
                       sport: sport,
                       onTap: () async {
-                        if (sport.name =='Fußball') {
+                        if (sport.format =='Player') {
+                         final competitionList = await ApiService.fetchCompetitions(sport.apiName!, '');
+                         print(competitionList);
+                        // 2. Für jede Competition die Spieler laden und in einer Liste sammeln
+                        List<Player> allPlayers = [];
+                        for (final competition in competitionList) {
+                          final players = await ApiService.fetchPlayers(competition.id);
+                          allPlayers.addAll(players);
+                        }
                           Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CountrySelectionScreen(sport: sport)
+                            builder: (context) => PlayersScreen(players: allPlayers)
                           ),
                         );
                           return;
                         }
                         else {
-                          final competitions = await ApiService.fetchCompetitions(sport.apiName!, '');
                           Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CompetitionsScreen(sport: sport, competitions: competitions)
+                            builder: (context) => CountrySelectionScreen(sport: sport)
                           ),
                         );
                           return;

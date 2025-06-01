@@ -6,10 +6,12 @@ import '../models/sport.dart';
 class FavoritesProvider extends ChangeNotifier {
   List<Competition> _favoriteCompetitions = [];
   List<Team> _favoriteTeams = [];
+  List<Player> _favoritePlayer = [];
   bool _isLoaded = false;
 
   List<Competition> get favoriteCompetitions => _favoriteCompetitions;
   List<Team> get favoriteTeams => _favoriteTeams;
+  List<Player> get favoritePlayer => _favoritePlayer;
   bool get isLoaded => _isLoaded;
 
   FavoritesProvider() {
@@ -54,6 +56,26 @@ class FavoritesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Player favorites
+    // Competition favorites
+  bool isPlayerFavorite(String playerid) {
+    return _favoritePlayer.any((p) => p.id == playerid);
+  }
+
+  void addPlayerToFavorites(Player player) {
+    if (!isCompetitionFavorite(player.id)) {
+      _favoritePlayer.add(player);
+      _saveFavorites();
+      notifyListeners();
+    }
+  }
+
+  void removePlayerFromFavorites(String playerid) {
+    _favoritePlayer.removeWhere((p) => p.id == playerid);
+    _saveFavorites();
+    notifyListeners();
+  }
+
   // Persistence
   Future<void> _loadFavorites() async {
     try {
@@ -87,6 +109,19 @@ class FavoritesProvider extends ChangeNotifier {
         }
       }
 
+      // Load players
+      final playersJson = prefs.getString('favorite_players');
+      if (playersJson != null && playersJson.isNotEmpty) {
+        try {
+          final List<dynamic> playersList = json.decode(playersJson);
+          _favoritePlayer = playersList
+              .map((p) => Player.fromJson(p))
+              .toList();
+        } catch (e) {
+          // Silent error handling - corrupted data will be ignored
+        }
+      }
+
       _isLoaded = true;
       notifyListeners();
     } catch (e) {
@@ -110,6 +145,12 @@ class FavoritesProvider extends ChangeNotifier {
         _favoriteTeams.map((t) => t.toJson()).toList()
       );
       await prefs.setString('favorite_teams', teamsJson);
+
+      // Save players
+      final playersJson = json.encode(
+        _favoritePlayer.map((p) => p.toJson()).toList()
+      );
+      await prefs.setString('favorite_players', playersJson);
       
     } catch (e) {
       // Silent error handling
@@ -119,6 +160,7 @@ class FavoritesProvider extends ChangeNotifier {
   void clearAllFavorites() {
     _favoriteCompetitions.clear();
     _favoriteTeams.clear();
+    _favoritePlayer.clear();
     _saveFavorites();
     notifyListeners();
   }
