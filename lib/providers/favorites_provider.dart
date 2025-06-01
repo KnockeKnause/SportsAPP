@@ -24,8 +24,6 @@ class FavoritesProvider extends ChangeNotifier {
   void addCompetitionToFavorites(Competition competition) {
     if (!isCompetitionFavorite(competition.id)) {
       _favoriteCompetitions.add(competition);
-      print('DEBUG: Competition added to favorites: ${competition.name}');
-      print('DEBUG: Total competitions in favorites: ${_favoriteCompetitions.length}');
       _saveFavorites();
       notifyListeners();
     }
@@ -33,8 +31,6 @@ class FavoritesProvider extends ChangeNotifier {
 
   void removeCompetitionFromFavorites(String competitionId) {
     _favoriteCompetitions.removeWhere((c) => c.id == competitionId);
-    print('DEBUG: Competition removed from favorites: $competitionId');
-    print('DEBUG: Total competitions in favorites: ${_favoriteCompetitions.length}');
     _saveFavorites();
     notifyListeners();
   }
@@ -47,8 +43,6 @@ class FavoritesProvider extends ChangeNotifier {
   void addTeamToFavorites(Team team) {
     if (!isTeamFavorite(team.id)) {
       _favoriteTeams.add(team);
-      print('DEBUG: Team added to favorites: ${team.name}');
-      print('DEBUG: Total teams in favorites: ${_favoriteTeams.length}');
       _saveFavorites();
       notifyListeners();
     }
@@ -56,8 +50,6 @@ class FavoritesProvider extends ChangeNotifier {
 
   void removeTeamFromFavorites(String teamId) {
     _favoriteTeams.removeWhere((t) => t.id == teamId);
-    print('DEBUG: Team removed from favorites: $teamId');
-    print('DEBUG: Total teams in favorites: ${_favoriteTeams.length}');
     _saveFavorites();
     notifyListeners();
   }
@@ -65,16 +57,10 @@ class FavoritesProvider extends ChangeNotifier {
   // Persistence
   Future<void> _loadFavorites() async {
     try {
-      print('DEBUG: Starting to load favorites...');
       final prefs = await SharedPreferences.getInstance();
-      
-      // Debug: Alle Keys in SharedPreferences anzeigen
-      final allKeys = prefs.getKeys();
-      print('DEBUG: All keys in SharedPreferences: $allKeys');
       
       // Load competitions
       final competitionsJson = prefs.getString('favorite_competitions');
-      print('DEBUG: Raw competitions JSON: $competitionsJson');
       
       if (competitionsJson != null && competitionsJson.isNotEmpty) {
         try {
@@ -82,17 +68,13 @@ class FavoritesProvider extends ChangeNotifier {
           _favoriteCompetitions = competitionsList
               .map((c) => Competition.fromJson(c))
               .toList();
-          print('DEBUG: Loaded ${_favoriteCompetitions.length} competitions');
         } catch (e) {
-          print('DEBUG: Error parsing competitions JSON: $e');
+          // Silent error handling - corrupted data will be ignored
         }
-      } else {
-        print('DEBUG: No competitions found in SharedPreferences');
       }
 
       // Load teams
       final teamsJson = prefs.getString('favorite_teams');
-      print('DEBUG: Raw teams JSON: $teamsJson');
       
       if (teamsJson != null && teamsJson.isNotEmpty) {
         try {
@@ -100,19 +82,14 @@ class FavoritesProvider extends ChangeNotifier {
           _favoriteTeams = teamsList
               .map((t) => Team.fromJson(t))
               .toList();
-          print('DEBUG: Loaded ${_favoriteTeams.length} teams');
         } catch (e) {
-          print('DEBUG: Error parsing teams JSON: $e');
+          // Silent error handling - corrupted data will be ignored
         }
-      } else {
-        print('DEBUG: No teams found in SharedPreferences');
       }
 
       _isLoaded = true;
-      print('DEBUG: Favorites loading completed');
       notifyListeners();
     } catch (e) {
-      print('DEBUG: Error loading favorites: $e');
       _isLoaded = true;
       notifyListeners();
     }
@@ -120,35 +97,22 @@ class FavoritesProvider extends ChangeNotifier {
 
   Future<void> _saveFavorites() async {
     try {
-      print('DEBUG: Starting to save favorites...');
       final prefs = await SharedPreferences.getInstance();
       
       // Save competitions
       final competitionsJson = json.encode(
         _favoriteCompetitions.map((c) => c.toJson()).toList()
       );
-      print('DEBUG: Saving competitions JSON: $competitionsJson');
-      
-      final competitionsSaved = await prefs.setString('favorite_competitions', competitionsJson);
-      print('DEBUG: Competitions saved successfully: $competitionsSaved');
+      await prefs.setString('favorite_competitions', competitionsJson);
 
       // Save teams
       final teamsJson = json.encode(
         _favoriteTeams.map((t) => t.toJson()).toList()
       );
-      print('DEBUG: Saving teams JSON: $teamsJson');
-      
-      final teamsSaved = await prefs.setString('favorite_teams', teamsJson);
-      print('DEBUG: Teams saved successfully: $teamsSaved');
-      
-      // Verify save by reading back
-      final verifyCompetitions = prefs.getString('favorite_competitions');
-      final verifyTeams = prefs.getString('favorite_teams');
-      print('DEBUG: Verification - competitions: ${verifyCompetitions != null}');
-      print('DEBUG: Verification - teams: ${verifyTeams != null}');
+      await prefs.setString('favorite_teams', teamsJson);
       
     } catch (e) {
-      print('DEBUG: Error saving favorites: $e');
+      // Silent error handling
     }
   }
 
@@ -157,18 +121,6 @@ class FavoritesProvider extends ChangeNotifier {
     _favoriteTeams.clear();
     _saveFavorites();
     notifyListeners();
-  }
-
-  // Debug-Funktion zum manuellen Testen
-  Future<void> debugSharedPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    final allKeys = prefs.getKeys();
-    print('DEBUG: All SharedPreferences keys: $allKeys');
-    
-    for (String key in allKeys) {
-      final value = prefs.get(key);
-      print('DEBUG: $key = $value');
-    }
   }
 
   // Methode zum manuellen Neuladen der Favoriten
