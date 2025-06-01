@@ -57,22 +57,23 @@ class TeamsScreen extends StatelessWidget {
                 return Consumer<FavoritesProvider>(
                   builder: (context, favoritesProvider, child) {
                     final isFavorite = favoritesProvider.isTeamFavorite(team.id);
-                    
                     return Card(
                       margin: const EdgeInsets.only(bottom: 12),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: Colors.grey[400],
+                          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
                           child: team.logoUrl != null && team.logoUrl!.isNotEmpty
-                              ? ClipOval(
+                              ? CircleAvatar(
+                                    backgroundColor: Colors.transparent,
+                                    radius: 40,
                                   child: CachedNetworkImage(
                                     imageUrl: team.logoUrl!,
-                                    width: 30,
-                                    height: 30,
+                                    width: 40,
+                                    height: 40,
                                     fit: BoxFit.contain,
                                     placeholder: (context, url) => const SizedBox(
-                                      width: 30,
-                                      height: 30,
+                                      width: 40,
+                                      height: 40,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2,
                                         color: Colors.white,

@@ -69,15 +69,21 @@ class CompetitionsScreen extends StatelessWidget {
                     ],
                   ),
                   onTap: () async {
+                    try{
                     final teams = await ApiService.fetchTeams(competition.id);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TeamsScreen(
-                          competition: competition, teams: teams,
-                        ),
+                        builder: (context) => TeamsScreen(competition: competition, teams: teams),
                       ),
                     );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Fehler beim Laden der Teams: $e'),
+                        ),
+                      );
+                    }
                   },
                 ),
               );

@@ -118,21 +118,28 @@ class ApiService {
           )
           .timeout(timeout);
 
-if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonBody = json.decode(response.body);
-        final List<dynamic> responseList = jsonBody['teams'];
+            if (response.statusCode == 200) {
+              final Map<String, dynamic> jsonBody = json.decode(response.body);
 
-        final List<Team> teams = responseList
-            .map((item) => Team.fromJson(item))
-            .toList();
-        return teams;
-      } else {
-        throw ApiException('Failed to fetch teams: ${response.statusCode}');
-      }
-    } catch (e) {
-      if (e is ApiException) rethrow;
-      throw ApiException('Network error: $e');
-    }
+              final dynamic responseList = jsonBody['teams'];
+
+              if (responseList == null) {
+                // Kein Ergebnis, "teams": null
+                throw ApiException('Keine Teams gefunden für diese Anfrage.');
+              }
+
+              final List<Team> teams = (responseList as List<dynamic>)
+                  .map((item) => Team.fromJson(item))
+                  .toList();
+
+              return teams;
+            } else {
+              throw ApiException('Failed to fetch teams: ${response.statusCode}');
+            }
+          } catch (e) {
+            if (e is ApiException) rethrow;
+            throw ApiException('Network error: $e');
+          }
   }
 
 }
