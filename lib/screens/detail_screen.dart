@@ -44,7 +44,7 @@ class _DetailScreenState extends State<DetailScreen> {
       });
     } catch (e) {
       setState(() {
-        errorMessage = 'Fehler beim Laden der Spieldaten: $e';
+        errorMessage = 'Failed to load data: $e';
         isLoading = false;
       });
     }
@@ -94,7 +94,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.team.name),
+        title: const Text('Details'),
         backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
       ),
       body: isLoading
@@ -127,7 +127,7 @@ class _DetailScreenState extends State<DetailScreen> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _loadTeamResults,
-            child: const Text('Erneut versuchen'),
+            child: const Text('Try again'),
           ),
         ],
       ),
@@ -149,7 +149,7 @@ class _DetailScreenState extends State<DetailScreen> {
             
             // Last Match Section
             _buildMatchSection(
-              title: 'Letztes Spiel',
+              title: 'Last Game',
               icon: Icons.history,
               match: lastMatch,
               showScore: true,
@@ -158,7 +158,7 @@ class _DetailScreenState extends State<DetailScreen> {
             
             // Next Match Section
             _buildMatchSection(
-              title: 'Nächstes Spiel',
+              title: 'Next Game',
               icon: Icons.schedule,
               match: nextMatch,
               showScore: false,
@@ -210,13 +210,6 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    widget.team.sport ?? 'Sport nicht verfügbar',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -330,15 +323,15 @@ class _DetailScreenState extends State<DetailScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: Colors.grey[800],
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Text(
+                  child: Text(
                     'VS',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                      color: Colors.grey[300],
                     ),
                   ),
                 ),
@@ -380,7 +373,7 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Keine Spieldaten verfügbar',
+              'No matches available',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey[600],

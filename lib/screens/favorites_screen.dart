@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../providers/favorites_provider.dart';
 import '../models/sport.dart';
 import '../widgets/team_card.dart';
-import 'competitions_screen.dart';
 import '../providers/sports_provider.dart';
 
 class FavoritesScreen extends StatelessWidget {

@@ -26,8 +26,7 @@ class CompetitionsScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final competition = competitions[index];
           return Consumer<FavoritesProvider>(
-            builder: (context, favoritesProvider, child) {
-              final isFavorite = favoritesProvider.isCompetitionFavorite(competition.id);    
+            builder: (context, favoritesProvider, child) {   
               return Card(
                 margin: const EdgeInsets.only(bottom: 16),
                 child: ListTile(
@@ -46,6 +45,16 @@ class CompetitionsScreen extends StatelessWidget {
                             color: Colors.grey[600],
                           ),
                         ),
+                    ],
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.grey[400],
+                        size: 16,
+                      ),
                     ],
                   ),
                   onTap: () async {

@@ -1,8 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../models/sport.dart';
-import '../providers/favorites_provider.dart';
 import '../widgets/player_card.dart';
 
 class PlayersScreen extends StatelessWidget {
@@ -17,7 +14,7 @@ class PlayersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Spieler'),
+        title: Text('Player'),
         backgroundColor: Theme.of(context).brightness == Brightness.dark 
             ? Colors.black 
             : const Color(0xFF4ECDC4),
@@ -34,7 +31,7 @@ class PlayersScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Keine Spieler verfügbar',
+                    'No Players Found',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.grey,
@@ -42,7 +39,7 @@ class PlayersScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Spieler werden über die API geladen',
+                    'Players will be displayed here once available.',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],

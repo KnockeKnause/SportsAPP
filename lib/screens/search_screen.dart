@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_sports_app/screens/competitions_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/sports_provider.dart';
 import '../models/sport.dart';
@@ -79,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'Keine Sportarten gefunden',
+                        'failed to find any sports',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.grey,
