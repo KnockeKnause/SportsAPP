@@ -83,7 +83,7 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Land wählen - ${widget.sport.name}'),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: const Color.fromRGBO(255, 135, 83, 1),
       ),
       body: Column(
         children: [

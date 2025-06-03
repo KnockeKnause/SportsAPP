@@ -17,7 +17,7 @@ class PlayersScreen extends StatelessWidget {
         title: Text('Player'),
         backgroundColor: Theme.of(context).brightness == Brightness.dark 
             ? Colors.black 
-            : const Color(0xFF4ECDC4),
+            : const Color.fromRGBO(255, 135, 83, 1),
       ),
       body: players.isEmpty
           ? const Center(

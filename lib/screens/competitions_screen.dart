@@ -18,7 +18,7 @@ class CompetitionsScreen extends StatelessWidget {
         title: Text(sport.name),
         backgroundColor: Theme.of(context).brightness == Brightness.dark 
             ? Colors.black 
-            : const Color(0xFF4ECDC4),
+            : const Color.fromRGBO(255, 135, 83, 1),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),

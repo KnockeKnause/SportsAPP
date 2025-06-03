@@ -19,7 +19,7 @@ class SportsProvider extends ChangeNotifier {
   // Mock data for demonstration - replace with real API calls
   void _loadSports() {
     _sports = [
-      Sport(id: '1', apiName: 'Soccer', name: 'Fußball', competitions:[], format: 'Team'),
+      Sport(id: '1', apiName: 'Soccer', name: 'Football', competitions:[], format: 'Team'),
       Sport(id: '2', apiName: 'Tennis', name: 'Tennis', competitions:[], format: 'Player'),
       Sport(id: '4', apiName: 'Basketball',name: 'Basketball', competitions:[],format: 'Team'),
       Sport(id: '5', apiName: 'Spikeball',name: 'Spikeball', competitions:[],format: 'Player'),

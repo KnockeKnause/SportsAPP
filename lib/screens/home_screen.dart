@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             fontSize: 20,
           ),
         ),
-        backgroundColor: isDark ? Colors.black : const Color(0xFF4ECDC4),
+        backgroundColor: isDark ? Colors.black : const Color.fromRGBO(255, 135, 83, 1),
       ),
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -59,21 +59,21 @@ class _HomeScreenState extends State<HomeScreen> {
             _currentIndex = index;
           });
         },
-        backgroundColor: isDark ? Colors.black : const Color(0xFF4ECDC4),
-        selectedItemColor: isDark ? Colors.white : Colors.black,
+        backgroundColor: isDark ? Colors.black : const Color.fromRGBO(255, 135, 83, 1),
+        selectedItemColor: isDark ? const Color.fromRGBO(255, 135, 83, 1) : const Color.fromRGBO(255, 135, 83, 1),
         unselectedItemColor: isDark ? Colors.white54 : Colors.black54,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
-            label: 'Favoriten',
+            label: 'Favorites',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Suche',
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Einstellungen',
+            label: 'Settings',
           ),
         ],
       ),
