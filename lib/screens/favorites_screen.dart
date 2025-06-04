@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/favorites_provider.dart';
 import '../models/sport.dart';
 import '../widgets/team_card.dart';
+import '../widgets/player_card.dart';
 import '../providers/sports_provider.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -12,7 +13,10 @@ class FavoritesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<FavoritesProvider>(
       builder: (context, favoritesProvider, child) {
-        if (favoritesProvider.favoriteTeams.isEmpty) {
+        bool hasTeams = favoritesProvider.favoriteTeams.isNotEmpty;
+        bool hasPlayers = favoritesProvider.favoritePlayer.isNotEmpty;
+        
+        if (!hasTeams && !hasPlayers) {
           return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -32,7 +36,7 @@ class FavoritesScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Füge Wettbewerbe und Teams zu deinen Favoriten hinzu',
+                  'Füge Wettbewerbe, Teams und Spieler zu deinen Favoriten hinzu',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.grey,
@@ -47,20 +51,24 @@ class FavoritesScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: _buildSportSections(context, favoritesProvider),
+            children: [
+              ..._buildTeamSections(context, favoritesProvider),
+              if (hasTeams && hasPlayers) const SizedBox(height: 32),
+              ..._buildPlayerSections(context, favoritesProvider),
+            ],
           ),
         );
       },
     );
   }
 
-  List<Widget> _buildSportSections(BuildContext context, FavoritesProvider favoritesProvider) {
+  List<Widget> _buildTeamSections(BuildContext context, FavoritesProvider favoritesProvider) {
     List<Widget> sections = [];
 
     final sportsProvider = Provider.of<SportsProvider>(context, listen: false);
     List<Sport> sports = sportsProvider.sports;
     
-    // Durchlaufe alle Sportarten und erstelle Sektionen für die, die Favoriten haben
+    // Durchlaufe alle Sportarten und erstelle Sektionen für die, die Team-Favoriten haben
     for (Sport sport in sports) {
       List<Team> teamsForSport = favoritesProvider.favoriteTeams
           .where((team) => team.sport == sport.apiName)
@@ -68,7 +76,7 @@ class FavoritesScreen extends StatelessWidget {
       
       if (teamsForSport.isNotEmpty) {
         sections.add(
-          _buildSportSection(
+          _buildTeamSection(
             context,
             sport.name,
             _getSportIcon(sport.apiName ?? ''),
@@ -81,7 +89,34 @@ class FavoritesScreen extends StatelessWidget {
     return sections;
   }
 
-  Widget _buildSportSection(BuildContext context, String title, IconData icon, List<Team> teams) {
+  List<Widget> _buildPlayerSections(BuildContext context, FavoritesProvider favoritesProvider) {
+    List<Widget> sections = [];
+
+    final sportsProvider = Provider.of<SportsProvider>(context, listen: false);
+    List<Sport> sports = sportsProvider.sports;
+    
+    // Durchlaufe alle Sportarten und erstelle Sektionen für die, die Player-Favoriten haben
+    for (Sport sport in sports) {
+      List<Player> playersForSport = favoritesProvider.favoritePlayer
+          .where((player) => player.sport == sport.apiName)
+          .toList();
+      
+      if (playersForSport.isNotEmpty) {
+        sections.add(
+          _buildPlayerSection(
+            context,
+            sport.name,
+            _getSportIcon(sport.apiName ?? ''),
+            playersForSport,
+          ),
+        );
+      }
+    }
+    
+    return sections;
+  }
+
+  Widget _buildTeamSection(BuildContext context, String title, IconData icon, List<Team> teams) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -108,7 +143,7 @@ class FavoritesScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withValues(alpha: 50,),
+                  color: Theme.of(context).primaryColor.withValues(alpha: 50),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -126,6 +161,57 @@ class FavoritesScreen extends StatelessWidget {
         
         // Teams List
         ...teams.map((team) => TeamCard(team: team)),
+        
+        const SizedBox(height: 24),
+      ],
+    );
+  }
+
+  Widget _buildPlayerSection(BuildContext context, String title, IconData icon, List<Player> players) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Section Header
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+          child: Row(
+            children: [
+              Icon(
+                Icons.person,
+                size: 24,
+                color: Colors.grey[700] ?? Theme.of(context).colorScheme.secondary,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[700] ?? Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: (Colors.blue[700] ?? Theme.of(context).colorScheme.secondary).withValues(alpha: 50),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '${players.length}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[700] ?? Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        
+        // Players List
+        ...players.map((player) => PlayerCard(player: player)),
         
         const SizedBox(height: 24),
       ],

@@ -192,6 +192,7 @@ class Player {
   final String? teamId;
   final String? nationality;
   final String? photoUrl;
+  final String? sport;
 
   Player({
     String? id,
@@ -199,11 +200,12 @@ class Player {
     this.teamId,
     this.nationality,
     this.photoUrl,
+    this.sport,
   }) : id = id ?? name.toLowerCase().replaceAll(' ', '_');
 
   @override
   String toString() {
-    return 'Player{id: $id, name: $name, teamId: $teamId, nationality: $nationality, photoUrl: $photoUrl}';
+    return 'Player{id: $id, name: $name, teamId: $teamId, nationality: $nationality, photoUrl: $photoUrl, sport: $sport}';
   }
 
   factory Player.fromJson(Map<String, dynamic> json) {
@@ -213,18 +215,23 @@ class Player {
   final String? teamId;
   final String? nationality;
   final String? photoUrl;
+  final String? sport;
+
   if (json.containsKey('idPlayer')) {
     id = json['idPlayer']?.toString() ?? '';
     name = json['strPlayer']?.toString() ?? '';
     teamId = json['idTeam']?.toString();
     nationality = json['strNationality']?.toString()?? '';
     photoUrl = json['strCutout']?.toString() ?? '';
+    sport = json['strSport']?.toString() ?? '';
+
   } else {
     id = json['id']?.toString() ?? '';
     name = json['name']?.toString() ?? '';
     teamId = json['teamId']?.toString();
     nationality = json['nationality']?.toString()?? '';
     photoUrl = json['photoUrl']?.toString() ?? '';
+    sport = json['sport']?.toString() ?? '';
   }
     return Player(
       id: id,
@@ -232,6 +239,7 @@ class Player {
       teamId: teamId,
       nationality: nationality,
       photoUrl: photoUrl,
+      sport: sport,
     );
   }
   Map<String, dynamic> toJson() {
@@ -241,6 +249,7 @@ class Player {
       'teamId': teamId,
       'nationality': nationality,
       'photoUrl': photoUrl,
+      'sport': sport,
     };
   }
 }

@@ -159,7 +159,9 @@ class ApiService {
           throw ApiException('Keine Spieler gefunden für diese Anfrage.');
         }
 
-        return responseList.map((item) => Player.fromJson(item)).toList();
+        return (responseList as List<dynamic>)
+          .map((item) => Player.fromJson(item))
+          .toList();
       } else {
         throw ApiException('Failed to fetch players: ${response.statusCode}');
       }
