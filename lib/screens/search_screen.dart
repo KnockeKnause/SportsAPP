@@ -95,73 +95,119 @@ class _SearchScreenState extends State<SearchScreen> {
                     return SportCard(
                       sport: sport,
                       onTap: () async {
-                    if (sport.format == 'Player') {
-                      try {
-                        // 1. Competitions laden
-                        final competitionList = await ApiService.fetchCompetitions(sport.apiName!, '');
-                        print('Competitions loaded: ${competitionList.length}');
-                        
-                        // 2. Für jede competition die teams laden und in einer Liste sammeln
-                        List<Team> allTeams = [];
-                        if (competitionList.isNotEmpty) {
-                          for (final competition in competitionList) {
-                            try {
-                              final teams = await ApiService.fetchTeams(competition.id);
-                              allTeams.addAll(teams);
-                              print('Teams loaded for ${competition.id}: ${teams.length}');
-                            } catch (e) {
-                              print('Error loading teams for competition ${competition.id}: $e');
-                              // Weitermachen mit nächster Competition
-                            }
-                          }
-                        }
-                        
-                        // 3. Für jedes Team die Spieler laden und in einer Liste sammeln
-                        List<Player> allPlayers = [];
-                        for (final team in allTeams) {
+                        if (sport.format == 'Player') {
+                          // Loading Dialog anzeigen
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false, // Verhindert das Schließen durch Tippen außerhalb
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: Container(
+                                  padding: const EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const CircularProgressIndicator(),
+                                      const SizedBox(height: 16),
+                                      const Text(
+                                        'Loading...',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        'Please wait...',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[800],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+
                           try {
-                            final players = await ApiService.fetchPlayers(team.id);
-                            allPlayers.addAll(players);
-                            print('Players loaded for team ${team.id}: ${players.length}');
+                            // 1. Competitions laden
+                            final competitionList = await ApiService.fetchCompetitions(sport.apiName!, '');
+                            print('Competitions loaded: ${competitionList.length}');
+                            
+                            // 2. Für jede competition die teams laden und in einer Liste sammeln
+                            List<Team> allTeams = [];
+                            if (competitionList.isNotEmpty) {
+                              for (final competition in competitionList) {
+                                try {
+                                  final teams = await ApiService.fetchTeams(competition.id);
+                                  allTeams.addAll(teams);
+                                  print('Teams loaded for ${competition.id}: ${teams.length}');
+                                } catch (e) {
+                                  print('Error loading teams for competition ${competition.id}: $e');
+                                  // Weitermachen mit nächster Competition
+                                }
+                              }
+                            }
+                            
+                            // 3. Für jedes Team die Spieler laden und in einer Liste sammeln
+                            List<Player> allPlayers = [];
+                            for (final team in allTeams) {
+                              try {
+                                final players = await ApiService.fetchPlayers(team.id);
+                                allPlayers.addAll(players);
+                                print('Players loaded for team ${team.id}: ${players.length}');
+                              } catch (e) {
+                                print('Error loading players for team ${team.id}: $e');
+                                // Weitermachen mit nächstem Team
+                              }
+                            }
+                            
+                            print('Total players loaded: ${allPlayers.length}');
+                            
+                            // Loading Dialog schließen
+                            Navigator.of(context).pop();
+                            
+                            if (allPlayers.isNotEmpty) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PlayersScreen(players: allPlayers)
+                                ),
+                              );
+                            } else {
+                              // Benutzer informieren, dass keine Spieler gefunden wurden
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Keine Spieler für diese Sportart gefunden.'),
+                                ),
+                              );
+                            }
                           } catch (e) {
-                            print('Error loading players for team ${team.id}: $e');
-                            // Weitermachen mit nächstem Team
+                            // Loading Dialog schließen falls noch offen
+                            Navigator.of(context).pop();
+                            
+                            print('Error in player loading process: $e');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Fehler beim Laden der Spieler: $e'),
+                              ),
+                            );
                           }
-                        }
-                        
-                        print('Total players loaded: ${allPlayers.length}');
-                        
-                        if (allPlayers.isNotEmpty) {
+                        } else {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PlayersScreen(players: allPlayers)
-                            ),
-                          );
-                        } else {
-                          // Benutzer informieren, dass keine Spieler gefunden wurden
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Keine Spieler für diese Sportart gefunden.'),
+                              builder: (context) => CountrySelectionScreen(sport: sport)
                             ),
                           );
                         }
-                      } catch (e) {
-                        print('Error in player loading process: $e');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Fehler beim Laden der Spieler: $e'),
-                          ),
-                        );
-                      }
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CountrySelectionScreen(sport: sport)
-                        ),
-                      );
-                    }
                   },
                     );
                   },
