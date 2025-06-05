@@ -23,9 +23,9 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
-            title: 'SCORE',
+            title: 'Who Plays',
             theme: ThemeData(
-              primarySwatch: Colors.teal,
+              primarySwatch: Colors.deepOrange,
               brightness: Brightness.light,
               appBarTheme: const AppBarTheme(
                 backgroundColor: Color(0xFF4ECDC4),
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
                 elevation: 0,
               ),
               bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                backgroundColor: Color(0xFF4ECDC4),
+                backgroundColor: Color.fromRGBO(255, 135, 83, 1),
                 selectedItemColor: Colors.black,
                 unselectedItemColor: Colors.black54,
               ),

@@ -28,27 +28,22 @@ class _HomeScreenState extends State<HomeScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        leading: Container(
-          margin: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-          ),
-          child: ClipOval(
-            child: Image.asset(
-              "lib/assets/img/logo.jpeg", // Passe den Pfad zum Bild an
-              width: 28,
-              height: 28,
-              fit: BoxFit.cover,
-            ),
-          ),
+        title: Image.asset(
+          "lib/assets/img/logo.png", // PNG-Logo als Titel
+          height: 80, // Höhe anpassen je nach Bedarf
+          fit: BoxFit.contain,
+          // Optional: Fehlerbehandlung falls Bild nicht gefunden wird
+          errorBuilder: (context, error, stackTrace) {
+            return const Text(
+              'Who Plays',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            );
+          },
         ),
-        title: const Text(
-          'SCORE',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
+        centerTitle: true, // Zentriert das Logo
         backgroundColor: isDark ? Colors.black : const Color.fromRGBO(255, 135, 83, 1),
       ),
       body: _screens[_currentIndex],

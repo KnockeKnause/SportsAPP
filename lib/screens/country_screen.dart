@@ -49,14 +49,14 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
     await Future.delayed(const Duration(seconds: 1)); // Simuliere Netzwerkverzögerung
     setState(() {
       _countries = [
-        Country(apiName: 'Germany', name: 'Deutschland', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Germany.png'),
-        Country(apiName: 'Austria', name: 'Österreich', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Austria.png'),
-        Country(apiName: 'Switzerland', name: 'Schweiz', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Switzerland.png'),
-        Country(apiName: 'France', name: 'Frankreich', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/France.png'),
-        Country(apiName: 'Spain', name: 'Spanien', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Spain.png'),
-        Country(apiName: 'Italy', name: 'Italien', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Italy.png'),
-        Country(apiName: 'USA', name: 'USA', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Angola.png'),
-        Country(apiName: 'Canada', name: 'Kanada', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Canada.png'),
+        Country(apiName: 'Germany', name: 'Germany', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Germany.png'),
+        Country(apiName: 'Austria', name: 'Austria', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Austria.png'),
+        Country(apiName: 'Switzerland', name: 'Switzerland', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Switzerland.png'),
+        Country(apiName: 'France', name: 'France', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/France.png'),
+        Country(apiName: 'Spain', name: 'Spain', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Spain.png'),
+        Country(apiName: 'Italy', name: 'Italy', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Italy.png'),
+        Country(apiName: 'USA', name: 'USA', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/USA.png'),
+        Country(apiName: 'Canada', name: 'Canada', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/Canada.png'),
         Country(apiName: 'England', name: 'England', flagUrl: 'https://www.thesportsdb.com/images/icons/flags/shiny/32/England.png')
       ];
       _filteredCountries = _countries;
@@ -82,7 +82,7 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Land wählen - ${widget.sport.name}'),
+        title: Text('Country - ${widget.sport.name}'),
         backgroundColor: const Color.fromRGBO(255, 135, 83, 1),
       ),
       body: Column(
@@ -93,7 +93,7 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Land suchen...',
+                hintText: 'Search Country...',
                 suffixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -112,7 +112,7 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
                 : _filteredCountries.isEmpty
                     ? const Center(
                         child: Text(
-                          'Keine Länder gefunden',
+                          'No countries found',
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                       )
@@ -126,13 +126,6 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
                             onTap: () async {
                               // Ligen für Sport und Land laden
                               try {
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
 
                                 final competitions = await ApiService.fetchCompetitions(
                                   widget.sport.apiName!,
@@ -154,7 +147,7 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
                               } catch (e) {
                                 Navigator.pop(context); // Loading dialog schließen
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Fehler beim Laden der Ligen: $e')),
+                                  SnackBar(content: Text('Failed to load Leagues: $e')),
                                 );
                               }
                             },

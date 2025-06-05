@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:my_sports_app/models/sport.dart';
 
@@ -28,18 +29,8 @@ class CountryCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           clipBehavior: Clip.antiAlias,
-          child: flagUrl != null && flagUrl!.isNotEmpty
-              ? Image.network(
-                  flagUrl!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    debugPrint('Image load failed: $error');
-                    return const Icon(Icons.flag, size: 20);
-                  },
-                )
-              : const Icon(Icons.flag, size: 20),
+          child: _buildCountryAvatar(context),
         ),
-
         title: Text(
           country.name,
           style: const TextStyle(
@@ -49,6 +40,42 @@ class CountryCard extends StatelessWidget {
         ),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: onTap,
+      ),
+    );
+    
+  }
+
+  Widget _buildCountryAvatar(BuildContext context) {
+    final hasLogo = country.flagUrl != null && country.flagUrl!.isNotEmpty;
+    
+    return CircleAvatar(
+      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+      child: hasLogo
+          ? CachedNetworkImage(
+              imageUrl: country.flagUrl!,
+              width: 40,
+              height: 40,
+              fit: BoxFit.contain,
+              placeholder: (context, url) => const SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              ),
+              errorWidget: (context, url, error) => _buildFallbackText(),
+            )
+          : _buildFallbackText(),
+    );
+  }
+
+  Widget _buildFallbackText() {
+    return Text(
+      country.name.substring(0, 1).toUpperCase(),
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
       ),
     );
   }
