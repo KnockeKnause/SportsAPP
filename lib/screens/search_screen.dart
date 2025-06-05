@@ -53,7 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
             controller: _searchController,
             onChanged: _filterSports,
             decoration: InputDecoration(
-              hintText: 'Sportart suchen...',
+              hintText: 'Search Sport...',
               suffixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
