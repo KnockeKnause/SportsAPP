@@ -28,7 +28,7 @@ class FavoritesScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  'Keine Favoriten',
+                  'No Favorites Yet',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.grey,
@@ -36,7 +36,7 @@ class FavoritesScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Füge Wettbewerbe, Teams und Spieler zu deinen Favoriten hinzu',
+                  'Add your favorite teams and players to see them here.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.grey,
