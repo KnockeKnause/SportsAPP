@@ -28,6 +28,7 @@ class SportsProvider extends ChangeNotifier {
       Sport(id: '8', apiName: 'Formel 1',name: 'Formel 1', competitions:[], format: 'Player'),
       Sport(id: '9', apiName: 'Handball',name: 'Handball', competitions:[], format: 'Team'),
       Sport(id: '10', apiName: 'American Football',name: 'American Football', competitions:[], format: 'Team'),
+      Sport(id: '11', apiName: 'Volleyball',name: 'Volleyball', competitions:[], format: 'Team'),
     ];
     notifyListeners();
   }
