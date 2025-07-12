@@ -28,11 +28,11 @@ class SettingsScreen extends StatelessWidget {
                         ),
                         DropdownMenuItem(
                           value: ThemeMode.light,
-                          child: Text('Hell'),
+                          child: Text('Light'),
                         ),
                         DropdownMenuItem(
                           value: ThemeMode.dark,
-                          child: Text('Dunkel'),
+                          child: Text('Dark'),
                         ),
                       ],
                       onChanged: (ThemeMode? mode) {
@@ -51,15 +51,15 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.info),
-                    title: const Text('Über die App'),
-                    subtitle: const Text('MY SPORTS v1.0.0'),
+                    title: const Text('About this App'),
+                    subtitle: const Text('MY SPORTS v1.4.3'),
                     onTap: () {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
                           title: const Text('MY SPORTS'),
                           content: const Text(
-                            'Eine App zur Verwaltung deiner Lieblingssportarten, Wettbewerbe und Teams.\n\nVersion: 1.0.0',
+                            'This app is designed to provide information about various sports, teams, and players. It fetches data from multiple sports APIs to deliver the latest updates and statistics.',
                           ),
                           actions: [
                             TextButton(
@@ -74,7 +74,7 @@ class SettingsScreen extends StatelessWidget {
                   const Divider(height: 1),
                   const ListTile(
                     leading: Icon(Icons.code),
-                    title: Text('Entwickelt mit Flutter'),
+                    title: Text('Developed with Flutter'),
                     subtitle: Text('Dart & Flutter Framework'),
                   ),
                 ],
@@ -87,7 +87,7 @@ class SettingsScreen extends StatelessWidget {
                   const ListTile(
                     leading: Icon(Icons.api),
                     title: Text('API Status'),
-                    subtitle: Text('Verbindung zu Sport-APIs'),
+                    subtitle: Text('Connection to Sport-APIs'),
                     trailing: Icon(
                       Icons.circle,
                       color: Colors.green,
@@ -97,13 +97,13 @@ class SettingsScreen extends StatelessWidget {
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.refresh),
-                    title: const Text('Favoriten löschen'),
-                    subtitle: const Text('Lösche sämtliche Favoriten'),
+                    title: const Text('Clear Favorites'),
+                    subtitle: const Text('Remove all favorite teams'),
                     onTap: () {
                       Provider.of<FavoritesProvider>(context, listen: false).clearAllFavorites();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Daten werden gelöscht...'),
+                          content: Text('All favorites cleared'),
                           duration: Duration(seconds: 2),
                         ),
                       );
