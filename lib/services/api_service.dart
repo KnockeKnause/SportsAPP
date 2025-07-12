@@ -3,40 +3,8 @@ import 'package:http/http.dart' as http;
 import '../models/sport.dart';
 
 class ApiService {
-  static const String baseUrl = 'https://www.thesportsdb.com/api/v1/json/123'; // Ersetzen Sie mit Ihrer API-URL
+  static const String baseUrl = 'https://www.thesportsdb.com/api/v1/json/123';
   static const Duration timeout = Duration(seconds: 10);
-
-  // Headers für alle API-Anfragen
-  static Map<String, String> get headers => {
-    'x-rapidapi-key': '39c957bce6f19bce08a4858574b55815',
-    'x-rapidapi-host': 'v3.football.api-sports.io'
-    // Fügen Sie hier API-Keys oder Authentifizierungs-Header hinzu
-    // 'Authorization': 'Bearer YOUR_API_KEY',
-  };
-
-  // Alle Sportarten abrufen
-  static Future<List<Sport>> fetchSports() async {
-    try {
-      final response = await http
-          .get(
-            Uri.parse('$baseUrl/sports'),
-            headers: headers,
-          )
-          .timeout(timeout);
-
-      if (response.statusCode == 200) {
-        final List<dynamic> sportsJson = json.decode(response.body);
-        return sportsJson.map((s) => Sport.fromJson(s)).toList();
-      } else {
-        throw ApiException('Failed to fetch sports: ${response.statusCode}');
-      }
-    } catch (e) {
-      if (e is ApiException) rethrow;
-      throw ApiException('Network error: $e');
-    }
-  }
-  
-  // Alle Länder abrufen
 
   static Future<List<Country>> fetchCountries(String sport) async {
     final response = await http.get(
@@ -58,13 +26,13 @@ class ApiService {
       if (countryApiName.isEmpty) {
         response = await http
             .get(
-              Uri.parse('https://www.thesportsdb.com/api/v1/json/123/search_all_leagues.php?s=$sportName'),
+              Uri.parse('$baseUrl/search_all_leagues.php?s=$sportName'),
             )
             .timeout(timeout);
       } else {
         response = await http
             .get(
-              Uri.parse('https://www.thesportsdb.com/api/v1/json/123/search_all_leagues.php?c=$countryApiName&s=$sportName'),
+              Uri.parse('$baseUrl/search_all_leagues.php?c=$countryApiName&s=$sportName'),
             )
             .timeout(timeout);
       }
@@ -92,7 +60,6 @@ class ApiService {
       final response = await http
           .get(
             Uri.parse('$baseUrl/sports/search?q=${Uri.encodeComponent(query)}'),
-            headers: headers,
           )
           .timeout(timeout);
 

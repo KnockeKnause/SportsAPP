@@ -32,33 +32,4 @@ class SportsProvider extends ChangeNotifier {
     ];
     notifyListeners();
   }
-
-  // Method to fetch sports from API
-  Future<void> fetchSportsFromApi() async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
-    try {
-      // Replace with your actual API endpoint
-      final response = await http.get(
-        Uri.parse('https://api.example.com/sports'),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> sportsJson = json.decode(response.body);
-        _sports = sportsJson.map((s) => Sport.fromJson(s)).toList();
-      } else {
-        _error = 'Failed to load sports: ${response.statusCode}';
-      }
-    } catch (e) {
-      _error = 'Network error: $e';
-      // Keep mock data if API fails
-      _loadSports();
-    }
-
-    _isLoading = false;
-    notifyListeners();
-  }
 }
