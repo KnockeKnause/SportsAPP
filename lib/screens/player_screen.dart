@@ -14,7 +14,7 @@ class PlayersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Player'),
+        title: const Text('Player'),
         backgroundColor: Theme.of(context).brightness == Brightness.dark 
             ? Colors.black 
             : const Color.fromRGBO(255, 135, 83, 1),

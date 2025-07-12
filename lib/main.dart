@@ -32,11 +32,6 @@ class MyApp extends StatelessWidget {
                 foregroundColor: Colors.black,
                 elevation: 0,
               ),
-              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                backgroundColor: Color.fromRGBO(255, 135, 83, 1),
-                selectedItemColor: Colors.black,
-                unselectedItemColor: Colors.black54,
-              ),
             ),
             darkTheme: ThemeData(
               primarySwatch: Colors.teal,
@@ -46,11 +41,6 @@ class MyApp extends StatelessWidget {
                 backgroundColor: Colors.black,
                 foregroundColor: Colors.white,
                 elevation: 0,
-              ),
-              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                backgroundColor: Colors.black,
-                selectedItemColor: Colors.white,
-                unselectedItemColor: Colors.white54,
               ),
             ),
             themeMode: themeProvider.themeMode,

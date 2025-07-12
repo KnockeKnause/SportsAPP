@@ -61,47 +61,4 @@ class SportsProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
-
-  // Method to fetch teams for a specific competition
-  /* Future<void> fetchTeamsForCompetition(String competitionId) async {
-    try {
-      final response = await http.get(
-        Uri.parse('https://api.example.com/competitions/$competitionId/teams'),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> teamsJson = json.decode(response.body);
-        final teams = teamsJson.map((t) => Team.fromJson(t)).toList();
-
-        // Update the competition with the fetched teams
-        for (var sport in _sports) {
-          for (var competition in sport.competitions) {
-            if (competition.id == competitionId) {
-              // Create a new competition with updated teams
-              final updatedCompetition = Competition(
-                id: competition.id,
-                name: competition.name,
-                description: competition.description,
-                season: competition.season,
-                sportType: competition.sportType,
-              );
-              
-              // Replace the competition in the list
-              final competitionIndex = sport.competitions.indexOf(competition);
-              sport.competitions[competitionIndex] = updatedCompetition;
-              break;
-            }
-          }
-        }
-        notifyListeners();
-      }
-    } catch (e) {
-      print('Error fetching teams: $e');
-    }
-  }
-
-  void refreshData() {
-    fetchSportsFromApi();
-  } */
 }

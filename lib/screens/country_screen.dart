@@ -10,10 +10,10 @@ class CountrySelectionScreen extends StatefulWidget {
   const CountrySelectionScreen({super.key, required this.sport});
 
   @override
-  _CountrySelectionScreenState createState() => _CountrySelectionScreenState();
+  CountrySelectionScreenState createState() => CountrySelectionScreenState();
 }
 
-class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
+class CountrySelectionScreenState extends State<CountrySelectionScreen> {
   List<Country> _countries = [];
   List<Country> _filteredCountries = [];
   bool _isLoading = true;
@@ -124,13 +124,13 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
                           return CountryCard(
                             country: country,
                             onTap: () async {
-                              // Ligen für Sport und Land laden
                               try {
-
                                 final competitions = await ApiService.fetchCompetitions(
                                   widget.sport.apiName!,
                                   country.apiName,
                                 );
+                                
+                                if (!mounted) return;
 
                                 Navigator.pop(context); // Loading dialog schließen
 
@@ -145,6 +145,7 @@ class _CountrySelectionScreenState extends State<CountrySelectionScreen> {
                                   ),
                                 );
                               } catch (e) {
+                                if (!mounted) return;
                                 Navigator.pop(context); // Loading dialog schließen
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Failed to load Leagues: $e')),

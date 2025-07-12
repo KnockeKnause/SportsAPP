@@ -5,16 +5,17 @@ import '../models/sport.dart';
 import '../widgets/sport_card.dart';
 import 'country_screen.dart';
 import '../services/api_service.dart';
+import 'dart:developer';
 import 'package:my_sports_app/screens/player_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  SearchScreenState createState() => SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class SearchScreenState extends State<SearchScreen> {
   final _searchController = TextEditingController();
   List<Sport> _filteredSports = [];
 
@@ -139,7 +140,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           try {
                             // 1. Competitions laden
                             final competitionList = await ApiService.fetchCompetitions(sport.apiName!, '');
-                            print('Competitions loaded: ${competitionList.length}');
+                            log('Competitions loaded: ${competitionList.length}');
                             
                             // 2. Für jede competition die teams laden und in einer Liste sammeln
                             List<Team> allTeams = [];
@@ -148,9 +149,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                 try {
                                   final teams = await ApiService.fetchTeams(competition.id);
                                   allTeams.addAll(teams);
-                                  print('Teams loaded for ${competition.id}: ${teams.length}');
+                                  log('Teams loaded for ${competition.id}: ${teams.length}');
                                 } catch (e) {
-                                  print('Error loading teams for competition ${competition.id}: $e');
+                                  log('Error loading teams for competition ${competition.id}: $e');
                                   // Weitermachen mit nächster Competition
                                 }
                               }
@@ -162,14 +163,14 @@ class _SearchScreenState extends State<SearchScreen> {
                               try {
                                 final players = await ApiService.fetchPlayers(team.id);
                                 allPlayers.addAll(players);
-                                print('Players loaded for team ${team.id}: ${players.length}');
+                                log('Players loaded for team ${team.id}: ${players.length}');
                               } catch (e) {
-                                print('Error loading players for team ${team.id}: $e');
+                                log('Error loading players for team ${team.id}: $e');
                                 // Weitermachen mit nächstem Team
                               }
                             }
                             
-                            print('Total players loaded: ${allPlayers.length}');
+                            log('Total players loaded: ${allPlayers.length}');
                             
                             // Loading Dialog schließen
                             Navigator.of(context).pop();
@@ -185,7 +186,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               // Benutzer informieren, dass keine Spieler gefunden wurden
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Keine Spieler für diese Sportart gefunden.'),
+                                  content: Text('No players found for this sport.'),
                                 ),
                               );
                             }
@@ -193,10 +194,10 @@ class _SearchScreenState extends State<SearchScreen> {
                             // Loading Dialog schließen falls noch offen
                             Navigator.of(context).pop();
                             
-                            print('Error in player loading process: $e');
+                            log('Error in player loading process: $e');
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Fehler beim Laden der Spieler: $e'),
+                                content: Text('Error loading players: $e'),
                               ),
                             );
                           }

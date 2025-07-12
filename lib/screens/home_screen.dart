@@ -9,10 +9,10 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   
   final List<Widget> _screens = [
@@ -55,8 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         backgroundColor: isDark ? Colors.black : const Color.fromRGBO(255, 135, 83, 1),
-        selectedItemColor: isDark ? const Color.fromRGBO(255, 135, 83, 1) : const Color.fromRGBO(255, 135, 83, 1),
-        unselectedItemColor: isDark ? Colors.white54 : Colors.black54,
+        selectedItemColor: isDark ? const Color.fromRGBO(255, 135, 83, 1) : Colors.black,
+        unselectedItemColor: isDark ? Colors.white54 : const Color.fromARGB(115, 0, 0, 0),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),

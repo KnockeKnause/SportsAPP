@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/sport.dart';
+import 'dart:developer';
 
 class DetailScreen extends StatefulWidget {
   final Team team;
@@ -65,7 +66,7 @@ class _DetailScreenState extends State<DetailScreen> {
         }
       }
     } catch (e) {
-      print('Error fetching last match: $e');
+      log('Error fetching last match: $e');
     }
     return null;
   }
@@ -85,7 +86,7 @@ class _DetailScreenState extends State<DetailScreen> {
         }
       }
     } catch (e) {
-      print('Error fetching next match: $e');
+      log('Error fetching next match: $e');
     }
     return null;
   }
