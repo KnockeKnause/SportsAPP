@@ -140,7 +140,6 @@ class ApiService {
 
 }
 
-
 // Custom Exception für API-Fehler
 class ApiException implements Exception {
   final String message;
